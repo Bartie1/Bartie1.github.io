@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+    <style>
+        body {
+          background-color: rgb(172, 151, 248);
+        }
+        
+        .text {
+        font-size: 40px;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: maroon;
+        }
+    </style>
+
+<body>
+
+<script>
+
+// Assign Password to move to next document
+
+var password = "password1"
+
+// check the password
+
+function goToGame() {
+
+  var check_input = document.getElementById("password-input").value;
+  if (check_input == password) {
+    window.location.assign("main 5.html") 
+  }
+  else {
+      alert("Wrong password. Please try again.")
+  }
+}
+
+</script>
+
+<h3 class="text">Please input the password to move to Puzzle 3</h3>
+
+<input class="button" type="text" id="password-input">
+
+<button class="button" onclick="goToGame()">Submit</button><br><br>
+
+<!-- reveal button -->
+
+<button onclick="document.getElementById('reveal').innerHTML=password">Reveal the password</button>
+
+<p id="reveal"></p>
+
+</body>
+</html>

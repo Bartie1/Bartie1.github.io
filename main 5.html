@@ -1,0 +1,1873 @@
+<!-- 
+
+Creative Technology Assigment
+"Arcade Shooter Puzzle"
+Author: Bartosz Iwaszkiewicz
+Student number: 21028392
+Course code: UFCFRN-30-0
+
+
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="eng"></html>
+
+<head>
+    <link rel="css" href="css.css">
+  </head>
+
+
+<body>
+
+
+    <script type="module">
+
+
+
+// import kaboom lib
+
+import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
+
+// load kaboom    
+
+kaboom({
+  background: [0, 0, 0],
+   //height: 800,
+  //width: 1000,
+  fullscreen: true,
+})
+
+// load assets
+
+   
+loadSprite("wall", "wall2.png");
+loadSprite("space-ship", "space-ship2.png");
+loadSprite("invader", "invader2.png")
+loadSprite("star", "star.png")
+loadSprite("ghost", "ghost2.png")
+
+loadSound("main", "kawalek2.mp3")
+loadSound("shoot", "shoot.mp3")
+loadSound("explosion", "explosion.mp3")
+loadSound("pow", "poow.mp3")
+
+layer(["obj","ui"], "obj")
+
+
+
+
+// -------------------------------------------------- Main menu  ------------------------------------------------------------------------                                           
+
+scene("main_menu", () => {
+
+    const ghost = add([
+        sprite("ghost"),
+        scale (0.7),
+        pos(1200,600),
+        ])
+
+
+
+    add([
+    pos(1000, 300),
+    text("LIBRARY GHOST DEMANS YOU PLAY THE GAME TO MOVE FORWARD!\n\n\n 'Use arrow keys to move around, space to shoot!'", {
+        size: 48,
+        width: 1400, 
+        font: "sink", // there're 4 built-in fonts: "apl386", "apl386o", "sink", and "sinko"
+    }
+    )])
+
+function addButton(txt, p, f) {
+
+	const btn = add([
+		text(txt, {
+            size: 96,
+            font: "sink"}),
+            color (0,255,0),
+		pos(p),
+		area({ cursor: "pointer", }),
+		scale(1),
+		origin("center"),
+        
+	])
+
+	btn.onClick(f)
+    
+	
+
+}
+
+addButton("Start", vec2(500, 500), () => start())
+addButton("Quit", vec2(500, 700), () => debug.log("bye"))
+
+})
+
+// -------------------------------------------------- Main menu end  ------------------------------------------------------------------------ 
+
+// reset cursor to default at frame start for easier cursor management
+
+onUpdate(() => cursor("default"))
+
+// start program with main menu scene
+
+go("main_menu")
+
+// scene win_0 - prompt after starting game
+
+scene("win_0", () => {
+    add([
+    pos(400, 400),
+    text("LEVEL 1.\n \nInvaders count: 24.\n\nTime: 30 seconds.\n\nEliminate invaders.\n\nPress any key to continue!", {
+        size: 48,
+        width: 1400, 
+        font: "sink", // there're 4 built-in fonts: "apl386", "apl386o", "sink", and "sinko"
+    }),
+    onClick(() => go("game_1"))
+])
+})
+
+function start() {
+	go("win_0")
+}
+
+     
+
+// -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
+
+scene("game_1", () => {
+
+const music = play("main")
+volume(0.2)
+
+//game area
+
+    const gameLevel = addLevel([
+    "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+    "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+    "!                                                                   &", 
+    "!                                                                   &", 
+    "!                                                                   &", 
+    "!                                                                   &",  
+    "!                                                                   &", 
+    "!                                                                   &",  
+    ], {
+    width: 25,
+    height: 130,
+
+    "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+    "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+    "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+    })
+
+    
+// player & controls
+
+    const MOVE_SPEED = 800
+
+    const player = add([
+        sprite("space-ship"),
+        scale (0.5),
+        pos(1200,1000),
+        area(),
+        solid(),
+        ])
+
+
+
+// Particle spawning
+
+const sprites = ["star"]
+
+sprites.forEach((spr) => {
+	loadSprite(spr, "star.png")
+})
+
+// Spawn one particle every 0.1 second
+loop(0.1, () => {
+
+	// Compose particle properties with components
+	const item = add([
+		pos(player.pos.add(27, 83)),
+		sprite(choose(sprites)),
+		origin("center"),
+		scale(rand(0.5, 1)),
+		area(),
+		body({ solid: false, }),
+		lifespan(1, { fade: 0.5 }),
+	])
+
+})
+
+
+// player dies from space invader collision
+
+    player.onCollide("invader", (invader) => {
+        go("lose", { score: score.value})
+        })
+
+// player dies from bullet
+
+    player.onCollide("bullet", (bullet) => {
+        destroy(bullet)
+        destroy(player)
+        addKaboom(bullet.pos)
+        go("lose", { score: score.value})
+    })
+
+// player key controlls
+
+keyDown("left", () => {
+player.move(-MOVE_SPEED, 0)
+})
+
+keyDown("right", () => {
+player.move(MOVE_SPEED, 0)
+})
+
+onKeyDown("up", () => {
+player.move(0, -MOVE_SPEED)
+})
+
+onKeyDown("down", () => {
+player.move(0, MOVE_SPEED)
+})
+
+// spawning bullets player
+
+const BULLET_PLAYER_SPEED = 400
+
+function bullet_player(p) {
+add([
+    area(),
+    rect(6,18),
+    pos(p),
+    origin("center"),
+    color(0, 255, 255),
+    "bullet_player"
+])
+}
+
+action("bullet_player", (b_p) => {
+b_p.move(0, -BULLET_PLAYER_SPEED)
+if (b_p.pos.y < 0){
+    destroy(b_p)
+}
+})
+
+
+keyPress("space", () => {
+bullet_player(player.pos.add(30,-5)),
+play("shoot")
+})
+
+// invaders move speed
+
+let INVADER_SPEED = 300
+const LEVEL_DOWN = 500
+
+action("space_invader", (invader) => {
+invader.move(INVADER_SPEED, 0)
+})
+
+// invaders colide with walls
+
+collides("space_invader", "right_wall", () => {
+INVADER_SPEED = -300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+
+collides("space_invader", "left_wall", () => {
+INVADER_SPEED = 300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+})
+})
+
+// invaders collide with player
+
+player.onCollide("space_invader", () => {
+    go("lose", {score: score.value})
+})
+
+// invaders fall down the screen
+
+action("space_invader", (s) => {
+    if (s.pos.y >= height() ) {
+    go("lose", {score: score.value })
+    }
+})
+
+// invader collides with player bullets
+
+    collides("bullet_player", "space_invader", (b,s) => {
+    destroy(b)
+    destroy(s)
+    addKaboom(b.pos)
+    score.value++
+    score.text = score.value
+    play("explosion")
+    if (score.value == 24) {
+        go("win_1")
+    }
+})
+
+// score display
+
+const score = add([
+text("0"),
+pos(20, 180),
+layer("ui"),
+scale(1),
+{
+    value: 0,
+}
+])
+
+// timer display
+
+const TIME_LEFT = 30
+
+const timer = add([
+text("0"),
+pos(10, 20),
+scale(1),
+layer("ui"),
+        {
+        time: TIME_LEFT
+        },
+    ])
+
+timer.action(() => {
+timer.time -= dt()
+timer.text = timer.time.toFixed(1)
+if (timer.time <= 0) {
+    go("lose")
+}
+
+})
+
+// -------------------------------------------------- Game level 1 end ------------------------------------------------------------------------       
+
+// -------------------------------------------------- Game Level 2  ------------------------------------------------------------------------       
+
+scene("game_2", () => {
+
+//game area
+
+const gameLevel = addLevel([
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",  
+"!                                                                   &", 
+"!                                                                   &", 
+"!                                                                   &",  
+"!                                                                   &", 
+"!                                                                   &",  
+], {
+width: 25,
+height: 130,
+
+"!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+"&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+"^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+})
+
+
+// player & controls
+
+const MOVE_SPEED = 800
+
+const player = add([
+    sprite("space-ship"),
+    scale (0.5),
+    pos(1200,1000),
+    area(),
+    solid(),
+    ])
+
+// Particle spawning
+
+const sprites = ["star"]
+
+sprites.forEach((spr) => {
+	loadSprite(spr, "star.png")
+})
+
+// Spawn one particle every 0.1 second
+loop(0.1, () => {
+
+	// Compose particle properties with components
+	const item = add([
+		pos(player.pos.add(27, 83)),
+		sprite(choose(sprites)),
+		origin("center"),
+		scale(rand(0.5, 1)),
+		area(),
+		body({ solid: false, }),
+		lifespan(1, { fade: 0.5 }),
+	])
+
+})
+    
+// player dies from space invader collision
+
+player.onCollide("invader", (invader) => {
+    go("win_1", { score: score.value})
+    })
+
+// player dies from bullet
+
+player.onCollide("bullet", (bullet) => {
+    destroy(bullet)
+    destroy(player)
+    addKaboom(bullet.pos)
+    go("win_1", { score: score.value})
+})
+
+// player key controlls
+
+keyDown("left", () => {
+player.move(-MOVE_SPEED, 0)
+})
+
+keyDown("right", () => {
+player.move(MOVE_SPEED, 0)
+})
+
+onKeyDown("up", () => {
+player.move(0, -MOVE_SPEED)
+})
+
+onKeyDown("down", () => {
+player.move(0, MOVE_SPEED)
+})
+
+// spawning bullets player
+
+const BULLET_PLAYER_SPEED = 400
+
+function bullet_player(p) {
+add([
+area(),
+rect(6,18),
+pos(p),
+origin("center"),
+color(0, 255, 255),
+"bullet_player"
+])
+}
+
+action("bullet_player", (b_p) => {
+b_p.move(0, -BULLET_PLAYER_SPEED)
+if (b_p.pos.y < 0){
+destroy(b_p)
+}
+})
+
+
+keyPress("space", () => {
+bullet_player(player.pos.add(30,-5))
+play("shoot")
+})
+
+// invaders move speed
+
+let INVADER_SPEED = 300
+const LEVEL_DOWN = 500
+
+action("space_invader", (invader) => {
+invader.move(INVADER_SPEED, 0)
+})
+
+// invaders colide with walls
+
+collides("space_invader", "right_wall", () => {
+INVADER_SPEED = -300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+
+collides("space_invader", "left_wall", () => {
+INVADER_SPEED = 300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+})
+})
+
+// invaders collide with bullets
+
+player.onCollide("space_invader", () => {
+go("win_1", {score: score.value})
+})
+
+// invaders fall down the screen
+
+action("space_invader", (s) => {
+if (s.pos.y >= height() ) {
+go("win_1", {score: score.value })
+}
+})
+
+// invader collides with player bullets
+
+collides("bullet_player", "space_invader", (b,s) => {
+destroy(b)
+destroy(s)
+addKaboom(b.pos)
+score.value++
+score.text = score.value
+play("explosion")
+if (score.value == 38) {
+    go("win_2")
+}
+})
+
+// score display
+
+const score = add([
+text("0"),
+pos(20, 180),
+layer("ui"),
+scale(1),
+{
+value: 0,
+}
+])
+
+// timer display
+
+const TIME_LEFT = 40
+
+const timer = add([
+text("0"),
+pos(10, 20),
+scale(1),
+layer("ui"),
+    {
+    time: TIME_LEFT
+    },
+])
+
+timer.action(() => {
+timer.time -= dt()
+timer.text = timer.time.toFixed(1)
+if (timer.time <= 0) {
+go("win_1")
+}
+
+})
+
+
+// --------------- LEVEL 2 ADDING POWEFUL INVADERS -------------
+
+let ENEMY_SPEED = 400
+const BULLET_SPEED = 800
+
+
+const powerful_invader = add ([
+        pos(100, 100),
+        sprite("invader"),
+        scale(0.5),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader"
+    ])
+
+
+    const powerful_invader2 = add ([
+        pos(300, 100),
+        sprite("invader"),
+        scale(0.5),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader2"
+    ])
+ 
+
+const invaders = [powerful_invader, powerful_invader2]
+
+// POWERFUL INVADERS AI followin_1g the pattern = wait, attack, constant movement
+
+invaders.forEach(powerful_invader => {
+    powerful_invader.onStateEnter("idle", async () =>{
+        await wait(rand(0.1, 1))
+        powerful_invader.enterState("attack")
+    })
+
+    powerful_invader.onStateEnter("attack", async () => {
+        if (powerful_invader.exists()){
+            const dir = player.pos.sub(powerful_invader.pos).unit()    
+        add ([
+            pos(powerful_invader.pos),
+            move(dir, BULLET_SPEED),
+            rect(30,10),
+            area(),
+            cleanup(),
+            origin("center"),
+            color(0, 255, 0),
+            play("pow"),
+            "bullet"
+              ])
+        
+        }
+
+    await wait(0.2)
+    powerful_invader.enterState("move")
+    })
+
+        powerful_invader.onStateEnter("move", async () => {
+	await wait(0.2)
+	powerful_invader.enterState("idle")
+})
+
+        powerful_invader.onStateUpdate("move", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+    })
+
+    powerful_invader.onStateUpdate("attack", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+})
+
+    powerful_invader.onStateUpdate("idle", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+})
+
+
+
+powerful_invader.enterState("idle")
+
+})
+
+
+// powerful invaders collide with player bullets
+
+invaders.forEach(powerful_invader => {
+    powerful_invader.onCollide("bullet_player", (bullet_player) => {
+    destroy(powerful_invader)
+    destroy(bullet_player)
+    score.value++
+    score.text = score.value
+    
+})
+})
+
+
+// powerful_invader collides with walls
+
+
+invaders.forEach(powerful_invader =>{
+    powerful_invader.onCollide("right_wall", (rightwall) => {
+    ENEMY_SPEED = -400
+    powerful_invader.move(0, LEVEL_DOWN)
+    })
+    
+invaders.forEach(powerful_invader =>{
+        powerful_invader.onCollide("left_wall", (leftwall) => {
+        ENEMY_SPEED = 400
+        powerful_invader.move(0, LEVEL_DOWN)
+    })
+})
+})
+})
+
+// ----------- POWERFUL INVADERS END ------------
+
+// -------------------------------------------------- Game scene 2 end ------------------------------------------------------------------------    
+
+// -------------------------------------------------- Game Level 3  ------------------------------------------------------------------------       
+
+scene("game_3", () => {
+
+//game area
+
+const gameLevel = addLevel([
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",  
+"!                                                                   &", 
+"!                                                                   &", 
+"!                                                                   &",  
+"!                                                                   &", 
+"!                                                                   &",  
+], {
+width: 25,
+height: 130,
+
+"!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+"&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+"^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+})
+
+
+// player & controls
+
+const MOVE_SPEED = 800
+
+const player = add([
+    sprite("space-ship"),
+    scale (0.5),
+    pos(1200,1000),
+    area(),
+    solid(),
+    ])
+
+// Particle spawning
+
+const sprites = ["star"]
+
+sprites.forEach((spr) => {
+	loadSprite(spr, "star.png")
+})
+
+// Spawn one particle every 0.1 second
+loop(0.1, () => {
+
+	// Compose particle properties with components
+	const item = add([
+		pos(player.pos.add(27, 83)),
+		sprite(choose(sprites)),
+		origin("center"),
+		scale(rand(0.5, 1)),
+		area(),
+		body({ solid: false, }),
+		lifespan(1, { fade: 0.5 }),
+	])
+
+})
+    
+// player dies from space invader collision
+
+player.onCollide("invader", (invader) => {
+    go("win_2", { score: score.value})
+    })
+
+// player dies from bullet
+
+player.onCollide("bullet", (bullet) => {
+    destroy(bullet)
+    destroy(player)
+    addKaboom(bullet.pos)
+    go("win_2", { score: score.value})
+})
+
+// player key controlls
+
+keyDown("left", () => {
+player.move(-MOVE_SPEED, 0)
+})
+
+keyDown("right", () => {
+player.move(MOVE_SPEED, 0)
+})
+
+onKeyDown("up", () => {
+player.move(0, -MOVE_SPEED)
+})
+
+onKeyDown("down", () => {
+player.move(0, MOVE_SPEED)
+})
+
+// spawning bullets player
+
+const BULLET_PLAYER_SPEED = 400
+
+function bullet_player(p) {
+add([
+area(),
+rect(6,18),
+pos(p),
+origin("center"),
+color(0, 255, 255),
+"bullet_player"
+])
+}
+
+action("bullet_player", (b_p) => {
+b_p.move(0, -BULLET_PLAYER_SPEED)
+if (b_p.pos.y < 0){
+destroy(b_p)
+}
+})
+
+
+keyPress("space", () => {
+bullet_player(player.pos.add(30,-5))
+play("shoot")
+})
+
+// invaders move speed
+
+let INVADER_SPEED = 300
+const LEVEL_DOWN = 500
+
+action("space_invader", (invader) => {
+invader.move(INVADER_SPEED, 0)
+})
+
+// invaders colide with walls
+
+collides("space_invader", "right_wall", () => {
+INVADER_SPEED = -300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+
+collides("space_invader", "left_wall", () => {
+INVADER_SPEED = 300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+})
+})
+
+// invaders collide with bullets
+
+player.onCollide("space_invader", () => {
+go("win_2", {score: score.value})
+})
+
+// invaders fall down the screen
+
+action("space_invader", (s) => {
+if (s.pos.y >= height() ) {
+go("win_2", {score: score.value })
+}
+})
+
+// invader collides with player bullets
+
+collides("bullet_player", "space_invader", (b,s) => {
+destroy(b)
+destroy(s)
+addKaboom(b.pos)
+score.value++
+score.text = score.value
+play("explosion")
+if (score.value == 39) {
+    go("win_3")
+}
+})
+
+// score display
+
+const score = add([
+text("0"),
+pos(20, 180),
+layer("ui"),
+scale(1),
+{
+value: 0,
+}
+])
+
+// timer display
+
+const TIME_LEFT = 50
+
+const timer = add([
+text("0"),
+pos(10, 20),
+scale(1),
+layer("ui"),
+    {
+    time: TIME_LEFT
+    },
+])
+
+timer.action(() => {
+timer.time -= dt()
+timer.text = timer.time.toFixed(1)
+if (timer.time <= 0) {
+go("win_2")
+}
+
+})
+
+
+// --------------- LEVEL 3 ADDING POWEFUL INVADERS -------------
+
+let ENEMY_SPEED = 400
+const BULLET_SPEED = 800
+
+
+const powerful_invader = add ([
+        pos(100, 100),
+        sprite("invader"),
+        scale(0.5),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader"
+    ])
+
+
+    const powerful_invader2 = add ([
+        pos(300, 100),
+        sprite("invader"),
+        scale(0.5),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader2"
+    ])
+
+
+    const powerful_invader3 = add ([
+        pos(500, 100),
+        sprite("invader"),
+        scale(0.5),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader3"
+    ])
+ 
+
+const invaders = [powerful_invader, powerful_invader2, powerful_invader3]
+
+// POWERFUL INVADERS AI followin_1g the pattern = wait, attack, constant movement
+
+invaders.forEach(powerful_invader => {
+    powerful_invader.onStateEnter("idle", async () =>{
+        await wait(rand(0.1, 1))
+        powerful_invader.enterState("attack")
+    })
+
+    powerful_invader.onStateEnter("attack", async () => {
+        if (powerful_invader.exists()){
+            const dir = player.pos.sub(powerful_invader.pos).unit()    
+        add ([
+            pos(powerful_invader.pos),
+            move(dir, BULLET_SPEED),
+            rect(30,10),
+            area(),
+            cleanup(),
+            origin("center"),
+            color(0, 255, 0),
+            play("pow"),
+            "bullet"
+              ])
+        
+        }
+
+    await wait(0.2)
+    powerful_invader.enterState("move")
+    })
+
+        powerful_invader.onStateEnter("move", async () => {
+	await wait(0.2)
+	powerful_invader.enterState("idle")
+})
+
+        powerful_invader.onStateUpdate("move", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+    })
+
+    powerful_invader.onStateUpdate("attack", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+})
+
+    powerful_invader.onStateUpdate("idle", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+})
+
+
+
+powerful_invader.enterState("idle")
+
+})
+
+
+// powerful invaders collide with player bullets
+
+invaders.forEach(powerful_invader => {
+    powerful_invader.onCollide("bullet_player", (bullet_player) => {
+    destroy(powerful_invader)
+    destroy(bullet_player)
+    score.value++
+    score.text = score.value
+    
+})
+})
+
+
+// powerful_invader collides with walls
+
+
+invaders.forEach(powerful_invader =>{
+    powerful_invader.onCollide("right_wall", (rightwall) => {
+    ENEMY_SPEED = -400
+    powerful_invader.move(0, LEVEL_DOWN)
+    })
+    
+invaders.forEach(powerful_invader =>{
+        powerful_invader.onCollide("left_wall", (leftwall) => {
+        ENEMY_SPEED = 400
+        powerful_invader.move(0, LEVEL_DOWN)
+    })
+})
+})
+})
+
+// ----------- POWERFUL INVADERS END ------------
+
+// -------------------------------------------------- Game Level 3 end  ------------------------------------------------------------------------       
+
+    
+
+// -------------------------------------------------- Game Level 4  ------------------------------------------------------------------------       
+
+scene("game_4", () => {
+
+//game area
+
+const gameLevel = addLevel([
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",  
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",   
+"!                                                                   &", 
+"!                                                                   &",  
+"!                                                                   &", 
+"!                                                                   &",  
+], {
+width: 25,
+height: 130,
+
+"!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+"&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+"^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+})
+
+
+// player & controls
+
+const MOVE_SPEED = 800
+
+const player = add([
+    sprite("space-ship"),
+    scale (0.5),
+    pos(1200,1000),
+    area(),
+    solid(),
+    ])
+
+// Particle spawning
+
+const sprites = ["star"]
+
+sprites.forEach((spr) => {
+	loadSprite(spr, "star.png")
+})
+
+// Spawn one particle every 0.1 second
+loop(0.1, () => {
+
+	// Compose particle properties with components
+	const item = add([
+		pos(player.pos.add(27, 83)),
+		sprite(choose(sprites)),
+		origin("center"),
+		scale(rand(0.5, 1)),
+		area(),
+		body({ solid: false, }),
+		lifespan(1, { fade: 0.5 }),
+	])
+
+})
+    
+// player dies from space invader collision
+
+player.onCollide("invader", (invader) => {
+    go("win_35", { score: score.value})
+    })
+
+// player dies from bullet
+
+player.onCollide("bullet", (bullet) => {
+    destroy(bullet)
+    destroy(player)
+    addKaboom(bullet.pos)
+    go("win_35", { score: score.value})
+})
+
+// player key controlls
+
+keyDown("left", () => {
+player.move(-MOVE_SPEED, 0)
+})
+
+keyDown("right", () => {
+player.move(MOVE_SPEED, 0)
+})
+
+onKeyDown("up", () => {
+player.move(0, -MOVE_SPEED)
+})
+
+onKeyDown("down", () => {
+player.move(0, MOVE_SPEED)
+})
+
+// spawning bullets player
+
+const BULLET_PLAYER_SPEED = 400
+
+function bullet_player(p) {
+add([
+area(),
+rect(6,18),
+pos(p),
+origin("center"),
+color(0, 255, 255),
+"bullet_player"
+])
+}
+
+action("bullet_player", (b_p) => {
+b_p.move(0, -BULLET_PLAYER_SPEED)
+if (b_p.pos.y < 0){
+destroy(b_p)
+}
+})
+
+
+keyPress("space", () => {
+bullet_player(player.pos.add(30,-5))
+play("shoot")
+})
+
+// invaders move speed
+
+let INVADER_SPEED = 300
+const LEVEL_DOWN = 500
+
+action("space_invader", (invader) => {
+invader.move(INVADER_SPEED, 0)
+})
+
+// invaders colide with walls
+
+collides("space_invader", "right_wall", () => {
+INVADER_SPEED = -300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+
+collides("space_invader", "left_wall", () => {
+INVADER_SPEED = 300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+})
+})
+
+// invaders collide with bullets
+
+player.onCollide("space_invader", () => {
+go("win_35", {score: score.value})
+})
+
+// invaders fall down the screen
+
+action("space_invader", (s) => {
+if (s.pos.y >= height() ) {
+go("win_35", {score: score.value })
+}
+})
+
+// invader collides with player bullets
+
+collides("bullet_player", "space_invader", (b,s) => {
+destroy(b)
+destroy(s)
+addKaboom(b.pos)
+score.value++
+score.text = score.value
+play("explosion")
+if (score.value == 52) {
+    go("win_4")
+}
+})
+
+// score display
+
+const score = add([
+text("0"),
+pos(20, 180),
+layer("ui"),
+scale(1),
+{
+value: 0,
+}
+])
+
+// timer display
+
+const TIME_LEFT = 50
+
+const timer = add([
+text("0"),
+pos(10, 20),
+scale(1),
+layer("ui"),
+    {
+    time: TIME_LEFT
+    },
+])
+
+timer.action(() => {
+timer.time -= dt()
+timer.text = timer.time.toFixed(1)
+if (timer.time <= 0) {
+go("win_3.5")
+}
+
+})
+
+
+// --------------- LEVEL 4 ADDING POWEFUL INVADERS -------------
+
+let ENEMY_SPEED = 700
+const BULLET_SPEED = 1000
+
+
+const powerful_invader = add ([
+        pos(100, 100),
+        sprite("invader"),
+        scale(0.6),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader"
+    ])
+
+
+    const powerful_invader2 = add ([
+        pos(300, 100),
+        sprite("invader"),
+        scale(0.6),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader2"
+    ])
+
+
+    const powerful_invader3 = add ([
+        pos(500, 100),
+        sprite("invader"),
+        scale(0.6),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader3"
+    ])
+
+    const powerful_invader4 = add ([
+        pos(700, 100),
+        sprite("invader"),
+        scale(0.5),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader4"
+    ])
+
+
+ 
+
+const invaders = [powerful_invader, powerful_invader2, powerful_invader3, powerful_invader4]
+
+// POWERFUL INVADERS AI followin_1g the pattern = wait, attack, constant movement
+
+invaders.forEach(powerful_invader => {
+    powerful_invader.onStateEnter("idle", async () =>{
+        await wait(rand(0.1, 1))
+        powerful_invader.enterState("attack")
+    })
+
+    powerful_invader.onStateEnter("attack", async () => {
+        if (powerful_invader.exists()){
+            const dir = player.pos.sub(powerful_invader.pos).unit()    
+        add ([
+            pos(powerful_invader.pos),
+            move(dir, BULLET_SPEED),
+            rect(15,40),
+            area(),
+            cleanup(),
+            origin("center"),
+            color(255, 0, 0),
+            play("pow"),
+            "bullet"
+              ])
+        
+        }
+
+    await wait(0.1)
+    powerful_invader.enterState("move")
+    })
+
+        powerful_invader.onStateEnter("move", async () => {
+	await wait(0.1)
+	powerful_invader.enterState("idle")
+})
+
+        powerful_invader.onStateUpdate("move", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+    })
+
+    powerful_invader.onStateUpdate("attack", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+})
+
+    powerful_invader.onStateUpdate("idle", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+})
+
+
+
+powerful_invader.enterState("idle")
+
+})
+
+
+// powerful invaders collide with player bullets
+
+invaders.forEach(powerful_invader => {
+    powerful_invader.onCollide("bullet_player", (bullet_player) => {
+    destroy(powerful_invader)
+    destroy(bullet_player)
+    score.value++
+    score.text = score.value
+    
+})
+})
+
+
+// powerful_invader collides with walls
+
+
+invaders.forEach(powerful_invader =>{
+    powerful_invader.onCollide("right_wall", (rightwall) => {
+    ENEMY_SPEED = -400
+    powerful_invader.move(0, LEVEL_DOWN)
+    })
+    
+invaders.forEach(powerful_invader =>{
+        powerful_invader.onCollide("left_wall", (leftwall) => {
+        ENEMY_SPEED = 400
+        powerful_invader.move(0, LEVEL_DOWN)
+    })
+})
+})
+})
+
+// ----------- POWERFUL INVADERS END ------------
+
+// -------------------------------------------------- Game Level 4 end  ------------------------------------------------------------------------   
+
+
+// -------------------------------------------------- Game Level 5  ------------------------------------------------------------------------       
+
+scene("game_5", () => {
+
+//game area
+
+const gameLevel = addLevel([
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",  
+"!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",   
+"!                                                                   &", 
+"!                                                                   &",  
+"!                                                                   &", 
+"!                                                                   &",  
+], {
+width: 25,
+height: 130,
+
+"!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+"&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+"^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+})
+
+
+// player & controls
+
+const MOVE_SPEED = 800
+
+const player = add([
+    sprite("space-ship"),
+    scale (0.5),
+    pos(1200,1000),
+    area(),
+    solid(),
+    ])
+
+// Particle spawning
+
+const sprites = ["star"]
+
+sprites.forEach((spr) => {
+	loadSprite(spr, "star.png")
+})
+
+// Spawn one particle every 0.1 second
+loop(0.1, () => {
+
+	// Compose particle properties with components
+	const item = add([
+		pos(player.pos.add(27, 83)),
+		sprite(choose(sprites)),
+		origin("center"),
+		scale(rand(0.5, 1)),
+		area(),
+		body({ solid: false, }),
+		lifespan(1, { fade: 0.5 }),
+	])
+
+})
+    
+// player dies from space invader collision
+
+player.onCollide("invader", (invader) => {
+    go("win_4", { score: score.value})
+    })
+
+// player dies from bullet
+
+player.onCollide("bullet", (bullet) => {
+    destroy(bullet)
+    destroy(player)
+    addKaboom(bullet.pos)
+    go("win_4", { score: score.value})
+})
+
+// player key controlls
+
+keyDown("left", () => {
+player.move(-MOVE_SPEED, 0)
+})
+
+keyDown("right", () => {
+player.move(MOVE_SPEED, 0)
+})
+
+onKeyDown("up", () => {
+player.move(0, -MOVE_SPEED)
+})
+
+onKeyDown("down", () => {
+player.move(0, MOVE_SPEED)
+})
+
+// spawning bullets player
+
+const BULLET_PLAYER_SPEED = 400
+
+function bullet_player(p) {
+add([
+area(),
+rect(6,18),
+pos(p),
+origin("center"),
+color(0, 255, 255),
+"bullet_player"
+])
+}
+
+action("bullet_player", (b_p) => {
+b_p.move(0, -BULLET_PLAYER_SPEED)
+if (b_p.pos.y < 0){
+destroy(b_p)
+}
+})
+
+
+keyPress("space", () => {
+bullet_player(player.pos.add(30,-5))
+play("shoot")
+})
+
+// invaders move speed
+
+let INVADER_SPEED = 700
+const LEVEL_DOWN = 500
+
+action("space_invader", (invader) => {
+invader.move(INVADER_SPEED, 0)
+})
+
+// invaders colide with walls
+
+collides("space_invader", "right_wall", () => {
+INVADER_SPEED = -300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+
+collides("space_invader", "left_wall", () => {
+INVADER_SPEED = 300
+every("space_invader", (s) => {
+s.move(0, LEVEL_DOWN)
+})
+})
+})
+
+// invaders collide with bullets
+
+player.onCollide("space_invader", () => {
+go("win_4", {score: score.value})
+})
+
+// invaders fall down the screen
+
+action("space_invader", (s) => {
+if (s.pos.y >= height() ) {
+go("win_4", {score: score.value })
+}
+})
+
+// invader collides with player bullets
+
+collides("bullet_player", "space_invader", (b,s) => {
+destroy(b)
+destroy(s)
+addKaboom(b.pos)
+score.value++
+score.text = score.value
+play("explosion")
+if (score.value == 52) {
+    go("win_5")
+}
+})
+
+// score display
+
+const score = add([
+text("0"),
+pos(20, 180),
+layer("ui"),
+scale(1),
+{
+value: 0,
+}
+])
+
+// timer display
+
+const TIME_LEFT = 50
+
+const timer = add([
+text("0"),
+pos(10, 20),
+scale(1),
+layer("ui"),
+    {
+    time: TIME_LEFT
+    },
+])
+
+timer.action(() => {
+timer.time -= dt()
+timer.text = timer.time.toFixed(1)
+if (timer.time <= 0) {
+go("win_4")
+}
+
+})
+
+
+// --------------- LEVEL 5 ADDING POWEFUL INVADERS -------------
+
+let ENEMY_SPEED = 700
+const BULLET_SPEED = 1000
+
+
+const powerful_invader = add ([
+        pos(100, 100),
+        sprite("invader"),
+        scale(0.8),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader"
+    ])
+
+
+    const powerful_invader2 = add ([
+        pos(300, 100),
+        sprite("invader"),
+        scale(0.8),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader2"
+    ])
+
+
+    const powerful_invader3 = add ([
+        pos(500, 100),
+        sprite("invader"),
+        scale(0.8),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader3"
+    ])
+
+    const powerful_invader4 = add ([
+        pos(700, 100),
+        sprite("invader"),
+        scale(0.8),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader4"
+    ])
+
+
+ 
+
+const invaders = [powerful_invader, powerful_invader2, powerful_invader3, powerful_invader4]
+
+// POWERFUL INVADERS AI followin_1g the pattern = wait, attack, constant movement
+
+invaders.forEach(powerful_invader => {
+    powerful_invader.onStateEnter("idle", async () =>{
+        await wait(rand(0.1, 1))
+        powerful_invader.enterState("attack")
+    })
+
+    powerful_invader.onStateEnter("attack", async () => {
+        if (powerful_invader.exists()){
+            const dir = player.pos.sub(powerful_invader.pos).unit()    
+        add ([
+            pos(powerful_invader.pos),
+            move(dir, BULLET_SPEED),
+            rect(40,40),
+            area(),
+            cleanup(),
+            origin("center"),
+            color(112, 42, 14),
+            play("pow"),
+            "bullet"
+              ])
+        
+        }
+
+    await wait(0.1)
+    powerful_invader.enterState("move")
+    })
+
+        powerful_invader.onStateEnter("move", async () => {
+	await wait(0.1)
+	powerful_invader.enterState("idle")
+})
+
+        powerful_invader.onStateUpdate("move", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+    })
+
+    powerful_invader.onStateUpdate("attack", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+})
+
+    powerful_invader.onStateUpdate("idle", () => {
+	if (!player.exists()) return
+    powerful_invader.move(ENEMY_SPEED, 0)
+
+})
+
+
+
+powerful_invader.enterState("idle")
+
+})
+
+
+// powerful invaders collide with player bullets
+
+invaders.forEach(powerful_invader => {
+    powerful_invader.onCollide("bullet_player", (bullet_player) => {
+    destroy(powerful_invader)
+    destroy(bullet_player)
+    score.value++
+    score.text = score.value
+    
+})
+})
+
+
+// powerful_invader collides with walls
+
+
+invaders.forEach(powerful_invader =>{
+    powerful_invader.onCollide("right_wall", (rightwall) => {
+    ENEMY_SPEED = -400
+    powerful_invader.move(0, LEVEL_DOWN)
+    })
+    
+invaders.forEach(powerful_invader =>{
+        powerful_invader.onCollide("left_wall", (leftwall) => {
+        ENEMY_SPEED = 400
+        powerful_invader.move(0, LEVEL_DOWN)
+    })
+})
+})
+})
+
+// ----------- POWERFUL INVADERS END ------------
+
+// -------------------------------------------------- Game Level 4 end  ------------------------------------------------------------------------   
+
+// scene win_1
+
+scene("win_1", () => {
+    add([
+    pos(400,400),
+    text("LEVEL 2.\n \nInvaders count: 36.\n\nPOWERFUL INVADERS count: 2\n\nTime: 40 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
+        size: 48, 
+        width: 1400, 
+        font: "sink", 
+    }),
+    onClick(() => go("game_2"))
+])
+})
+
+
+// scene win_2
+
+scene("win_2", () => {
+    add([
+    pos(400,400),
+text("LEVEL 3.\n \nInvaders count: 36.\n\n POWERFUL INVADERS count: 3\n\nTime: 50 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
+        size: 48, 
+        width: 1400, 
+        font: "sink", 
+    }),
+    onClick(() => go("game_3"))
+])
+})
+
+// scene win_3
+
+scene("win_3", () => {
+    add([
+    pos(400,400),
+text("You win! Password is: PASSWORD1\n\n Or mouse click to  carry on playing", {
+        size: 48, 
+        width: 1400, 
+        font: "sink", 
+    }),
+
+onClick(() => go("win_35"))
+
+])
+})
+
+// scene win_3.5
+
+scene("win_35", () => {
+    add([
+    pos(400,400),
+text("LEVEL 4.\n\nInvaders count: 48.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nPOWERFUL INVADERS ARE UPGRADED.\n\nMouse click to continue!", {
+        size: 48, 
+        width: 1400, 
+        font: "sink", 
+    }),
+
+onClick(() => go("game_4"))
+
+])
+})
+
+// scene win_4
+
+scene("win_4", () => {
+    add([
+    pos(400,400),
+text("LEVEL 5. FINAL LEVEL \n\nInvaders count: 46.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nALL INVADERS ARE UPGRADED.\n\nMouse click to continue!", {
+        size: 48, 
+        width: 1400, 
+        font: "sink", 
+    }),
+
+onClick(() => go("game_5"))
+
+
+
+])
+})
+
+// scene win_5
+
+scene("win_5", () => {
+    add([
+    pos(400,400),
+text("Congratulations on beating my game!", {
+        size: 48, 
+        width: 1400, 
+        font: "sink", 
+    }),
+
+music.pause(),
+
+onClick(() => go("main_menu"))
+
+])
+})
+
+// scene lose
+
+scene("lose", () => {
+
+
+
+    add([
+    pos(400,400),
+text("You lost! Your score: " + score.text + "\n\n You could always try again? \n\nMouse click to go to menu\n\n",
+{
+        size: 48, 
+        width: 1400, 
+        font: "sink", 
+}),
+scale(0.7),
+pos(400.400),
+music.pause(),
+onClick(() => go("main_menu"))
+
+
+])
+
+
+
+
+
+})    
+})
+
+
+
+
+
+</script>
+</body>
