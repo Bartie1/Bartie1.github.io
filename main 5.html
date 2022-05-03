@@ -16,11 +16,7 @@
 
 
 <body>
-
-
     <script type="module">
-
-
 
 // import kaboom lib
 
@@ -31,27 +27,22 @@ import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
 kaboom({
   background: [0, 0, 0],
     //height: 1000,
-  //width: 2000,
+    //width: 2000,
   fullscreen: true,
 })
 
 // load assets
 
-   
 loadSprite("wall", "sprites/wall.png");
 loadSprite("space-ship", "sprites/space-ship.png");
 loadSprite("invader", "sprites/invader.png")
-loadSprite("star", "sprites/star.png")
+loadSprite("star", "sprites/flame.png")
 loadSprite("ghost", "sprites/ghost.png")
-
 loadSound("main", "sounds/main_theme.mp3")
 loadSound("shoot", "sounds/shoot.mp3")
 loadSound("explosion", "sounds/explosion.mp3")
 loadSound("pow", "sounds/poow.mp3")
-
 layer(["obj","ui"], "obj")
-
-
 
 
 // -------------------------------------------------- Main menu  ------------------------------------------------------------------------                                           
