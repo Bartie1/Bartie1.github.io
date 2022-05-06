@@ -129,6 +129,14 @@ function addLevelWrapper(map_) {
     )
 }
 
+function musicOn() {
+    const music = play("main")
+    volume(0.2)
+    return music
+}
+
+//----------------------------------------------------------------------------------
+
 // start program with main menu scene
 
 go("main_menu")
@@ -157,8 +165,7 @@ function start() {
 
 scene("game_1", () => {
 
-const music = play("main")
-volume(0.2)
+const music = musicOn()
 
 //game area
 
