@@ -123,6 +123,20 @@ function start() {
 	go("win_0")
 }
 
+//----------------------------------
+
+
+function spawnPlayer() {
+    add([
+        sprite("space-ship"),
+        scale (0.5),
+        pos(910,800),
+        area(),
+        solid(),
+        ])
+}
+
+
      
 // -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
 
@@ -154,15 +168,9 @@ volume(0.2)
     
 // player & controls
 
-    const MOVE_SPEED = 800
+const MOVE_SPEED = 800
 
-    const player = add([
-        sprite("space-ship"),
-        scale (0.5),
-        pos(910,800),
-        area(),
-        solid(),
-        ])
+spawnPlayer()
 
 
 // Particle spawning
