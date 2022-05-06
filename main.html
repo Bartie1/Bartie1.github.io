@@ -105,7 +105,7 @@ addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't c
 
 onUpdate(() => cursor("default"))
 
-//---------------------------------- essential stuff
+//---------------------------------- essential stuff that repeats itself
 
 const MOVE_SPEED = 800
 
@@ -139,7 +139,7 @@ function addLevelWrapper(map_) {
     )
 }
 
-// spawnParticles
+// spawn Particles
 
 function spawnParticles(target) {
     const sprites = ["star"]
@@ -399,28 +399,8 @@ const player = spawnPlayer()
 
 // Particle spawning
 
-const sprites = ["star"]
+spawnParticles(player)
 
-sprites.forEach((spr) => {
-	loadSprite(spr, "sprites/flame.png")
-})
-
-// Spawn one particle every 0.1 second
-loop(0.1, () => {
-
-	// Compose particle properties with components
-	const item = add([
-		pos(player.pos.add(27, 83)),
-		sprite(choose(sprites)),
-		origin("center"),
-		scale(rand(0.5, 1)),
-		area(),
-		body({ solid: false, }),
-		lifespan(1, { fade: 0.5 }),
-	])
-
-})
-    
 // player dies from space invader collision
 
 player.onCollide("invader", (invader) => {
@@ -718,27 +698,7 @@ const player = spawnPlayer()
 
 // Particle spawning
 
-const sprites = ["star"]
-
-sprites.forEach((spr) => {
-	loadSprite(spr, "sprites/flame.png")
-})
-
-// Spawn one particle every 0.1 second
-loop(0.1, () => {
-
-	// Compose particle properties with components
-	const item = add([
-		pos(player.pos.add(27, 83)),
-		sprite(choose(sprites)),
-		origin("center"),
-		scale(rand(0.5, 1)),
-		area(),
-		body({ solid: false, }),
-		lifespan(1, { fade: 0.5 }),
-	])
-
-})
+spawnParticles(player)
     
 // player dies from space invader collision
 
@@ -1050,27 +1010,7 @@ const player = spawnPlayer()
 
 // Particle spawning
 
-const sprites = ["star"]
-
-sprites.forEach((spr) => {
-	loadSprite(spr, "sprites/flame.png")
-})
-
-// Spawn one particle every 0.1 second
-loop(0.1, () => {
-
-	// Compose particle properties with components
-	const item = add([
-		pos(player.pos.add(27, 83)),
-		sprite(choose(sprites)),
-		origin("center"),
-		scale(rand(0.5, 1)),
-		area(),
-		body({ solid: false, }),
-		lifespan(1, { fade: 0.5 }),
-	])
-
-})
+spawnParticles(player)
     
 // player dies from space invader collision
 
@@ -1392,27 +1332,7 @@ const player = spawnPlayer()
 
 // Particle spawning
 
-const sprites = ["star"]
-
-sprites.forEach((spr) => {
-	loadSprite(spr, "sprites/flame.png")
-})
-
-// Spawn one particle every 0.1 second
-loop(0.1, () => {
-
-	// Compose particle properties with components
-	const item = add([
-		pos(player.pos.add(27, 83)),
-		sprite(choose(sprites)),
-		origin("center"),
-		scale(rand(0.5, 1)),
-		area(),
-		body({ solid: false, }),
-		lifespan(1, { fade: 0.5 }),
-	])
-
-})
+spawnParticles(player)
     
 // player dies from space invader collision
 
