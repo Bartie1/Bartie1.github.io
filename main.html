@@ -107,13 +107,14 @@ onUpdate(() => cursor("default"))
 
 
 function spawnPlayer() {
-    return add([
+    player = add([
         sprite("space-ship"),
         scale (0.5),
         pos(910,800),
         area(),
         solid(),
         ])
+    return player
 }
 
 // start program with main menu scene
@@ -379,13 +380,7 @@ height: 130,
 
 const MOVE_SPEED = 800
 
-const player = add([
-    sprite("space-ship"),
-    scale (0.5),
-    pos(910,800),
-    area(),
-    solid(),
-    ])
+const player = spawnPlayer()
 
 // Particle spawning
 
