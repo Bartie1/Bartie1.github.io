@@ -139,6 +139,32 @@ function addLevelWrapper(map_) {
     )
 }
 
+// doggy
+
+function dog() {
+    const sprites = ["star"]
+
+    sprites.forEach((spr) => {
+        loadSprite(spr, "sprites/flame.png")
+    })
+
+    // Spawn one particle every 0.1 second
+    loop(0.1, () => {
+
+        // Compose particle properties with components
+        const item = add([
+            pos(player.pos.add(27, 83)),
+            sprite(choose(sprites)),
+            origin("center"),
+            scale(rand(0.5, 1)),
+            area(),
+            body({ solid: false, }),
+            lifespan(1, { fade: 0.5 }),
+        ])
+
+    })
+}
+
 
 //----------------------------------------------------------------------------------
 
@@ -194,28 +220,7 @@ const player = spawnPlayer()
 
 // Particle spawning
 
-const sprites = ["star"]
-
-sprites.forEach((spr) => {
-	loadSprite(spr, "sprites/flame.png")
-})
-
-// Spawn one particle every 0.1 second
-loop(0.1, () => {
-
-	// Compose particle properties with components
-	const item = add([
-		pos(player.pos.add(27, 83)),
-		sprite(choose(sprites)),
-		origin("center"),
-		scale(rand(0.5, 1)),
-		area(),
-		body({ solid: false, }),
-		lifespan(1, { fade: 0.5 }),
-	])
-
-})
-
+dog()
 
 // player dies from bullet
 
