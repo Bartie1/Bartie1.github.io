@@ -264,7 +264,17 @@ defineControls(player)
         go("lose", { score: score.value})
     })
 
+// player falls down 
 
+function fallDown(player){
+    if (player.pos.y > 1100){
+        go("lose")
+    }
+}
+
+while (True) {
+    FallDown()
+} 
 
 // spawning bullets player
 
@@ -1103,12 +1113,6 @@ go("win_35", {score: score.value})
 
 // invaders fall down the screen
 
-action("space_invader", (s) => {
-if (s.pos.y >= height() ) {
-go("win_35", {score: score.value })
-}
-})
-
 
 // invader collides with player bullets
 
@@ -1424,11 +1428,6 @@ go("win_4", {score: score.value})
 
 // invaders fall down the screen
 
-action("space_invader", (s) => {
-if (s.pos.y >= height() ) {
-go("win_4", {score: score.value })
-}
-})
 
 // invader collides with player bullets
 
