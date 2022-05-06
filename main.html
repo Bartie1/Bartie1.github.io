@@ -86,7 +86,6 @@ function addButton(txt, p, f) {
 }
 
 addButton("Start", vec2(300, 300), () => start())
-addButton("Credits", vec2(300, 500), () => credits())
 addButton("Quit", vec2(300, 700), () => debug.log("Actually this program can't close the browser by itself yet."))
 
 })
@@ -1855,23 +1854,6 @@ onClick(() => go("main_menu"))
 ])
 })    
 })
-
-// scene credits
-
-scene("credits", () => {
-    add([
-    pos(200,200),
-    text("Project has been inspired by kaboom.js official tutorials: https://kaboomjs.com/doc/intro and Code with Ania Kubów tutorials. https://www.youtube.com/channel/UC5DNytAJ6_FISueUfzZCVswThe \n\n The sprites used in this project are free art found on https://opengameart.org/ and  https://itch.io/game-assets/free \n\n All the music in this project has been writen and produced by the author using https://musescore.org/en software.", {
-        size: 32, 
-        width: 1400, 
-        font: "sink", 
-    }),
-
-music.pause(),
-
-onClick(() => go("main_menu"))
-
-])
 
 </script>
 </body>
