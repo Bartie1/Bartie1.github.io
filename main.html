@@ -300,7 +300,7 @@ action("space_invader", (s) => {
     destroy(s)
     addKaboom(b.pos)
     score.value++
-    score.text = score.text + score.value
+    score.text = score.value
     play("explosion")
     if (score.value == 24) {
         go("win_1")
@@ -310,7 +310,7 @@ action("space_invader", (s) => {
 // score display
 
 const score = add([
-text("Score: "),
+text("0"),
 pos(20, 180),
 layer("ui"),
 scale(1),
