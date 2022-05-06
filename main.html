@@ -141,7 +141,7 @@ function addLevelWrapper(map_) {
 
 // spawnParticles
 
-function spawnParticles(x) {
+function spawnParticles(target) {
     const sprites = ["star"]
 
     sprites.forEach((spr) => {
@@ -153,7 +153,7 @@ function spawnParticles(x) {
 
         // Compose particle properties with components
         const item = add([
-            pos(x.pos.add(27, 83)),
+            pos(target/* target means player arg */.pos.add(27, 83)),
             sprite(choose(sprites)),
             origin("center"),
             scale(rand(0.5, 1)),
