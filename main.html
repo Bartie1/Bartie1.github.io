@@ -101,8 +101,6 @@ addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't c
 
 onUpdate(() => cursor("default"))
 
-
-
 //---------------------------------- essential stuff
 
 
@@ -357,7 +355,25 @@ scene("game_2", () => {
 
 //game area
 
-const gameLevel = addLevel([
+// const gameLevel = addLevel([
+// "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+// "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+// "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",  
+// "!                                                                   &", 
+// "!                                                                   &", 
+// "!                                                                   &",  
+// "!                                                                   &", 
+// "!                                                                   &",  
+// ], {
+// width: 25,
+// height: 130,
+
+// "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+// "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+// "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+// })
+
+map1 = [
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",  
@@ -366,30 +382,23 @@ const gameLevel = addLevel([
 "!                                                                   &",  
 "!                                                                   &", 
 "!                                                                   &",  
-], {
-width: 25,
-height: 130,
+];
 
-"!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
-"&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
-"^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
-})
+function addLevelWrapper(map_) {
+    return addLevel(
+        map_, 
+        {
+            width: Math.floor(window.screen.availWidth/69),
+            height: Math.floor(window.screen.availHeight/8),
 
-// addLevelWrapper(map_) {
-//     return addLevel(
-//         map_, 
-//         {
-//             width: 25,
-//             height: 130,
+            "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+            "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+            "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+        },
+    )
+}
 
-//             "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
-//             "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
-//             "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
-//         }
-//     )
-// }
-
-// const gameLevel = addLevelWrapper(map1)
+const gameLevel = addLevelWrapper(map1)
 
 // player & controls
 
