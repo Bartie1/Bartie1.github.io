@@ -107,7 +107,8 @@ onUpdate(() => cursor("default"))
 
 //---------------------------------- essential stuff that repeats itself
 
-const MOVE_SPEED = 800
+const MOVE_SPEED = 800 // player move speed
+const BULLET_PLAYER_SPEED = 400
 
 
 // spawn player function
@@ -267,8 +268,6 @@ defineControls(player)
 
 // spawning bullets player
 
-const BULLET_PLAYER_SPEED = 400
-
 function bullet_player(p) {
 add([
     area(),
@@ -277,7 +276,7 @@ add([
     origin("center"),
     color(0, 255, 255),
     "bullet_player"
-])
+    ])
 }
 
 action("bullet_player", (b_p) => {
@@ -324,13 +323,8 @@ player.onCollide("space_invader", () => {
     go("lose", {score: score.value})
 })
 
-// invaders fall down the screen
+// invaders fall down the screen - define
 
-action("space_invader", (s) => {
-    if (s.pos.y >= height() ) {
-    go("lose", {score: score.value })
-    }
-})
 
 // invader collides with player bullets
 
@@ -447,8 +441,6 @@ player.move(0, MOVE_SPEED)
 
 // spawning bullets player
 
-const BULLET_PLAYER_SPEED = 400
-
 function bullet_player(p) {
 add([
 area(),
@@ -506,11 +498,7 @@ go("win_1", {score: score.value})
 
 // invaders fall down the screen
 
-action("space_invader", (s) => {
-if (s.pos.y >= height() ) {
-go("win_1", {score: score.value })
-}
-})
+
 
 // invader collides with player bullets
 
@@ -746,8 +734,6 @@ player.move(0, MOVE_SPEED)
 
 // spawning bullets player
 
-const BULLET_PLAYER_SPEED = 400
-
 function bullet_player(p) {
 add([
 area(),
@@ -805,11 +791,6 @@ go("win_2", {score: score.value})
 
 // invaders fall down the screen
 
-action("space_invader", (s) => {
-if (s.pos.y >= height() ) {
-go("win_2", {score: score.value })
-}
-})
 
 // invader collides with player bullets
 
@@ -1058,7 +1039,6 @@ player.move(0, MOVE_SPEED)
 
 // spawning bullets player
 
-const BULLET_PLAYER_SPEED = 400
 
 function bullet_player(p) {
 add([
@@ -1117,11 +1097,7 @@ go("win_35", {score: score.value})
 
 // invaders fall down the screen
 
-action("space_invader", (s) => {
-if (s.pos.y >= height() ) {
-go("win_35", {score: score.value })
-}
-})
+
 
 // invader collides with player bullets
 
@@ -1379,8 +1355,6 @@ player.move(0, MOVE_SPEED)
 })
 
 // spawning bullets player
-
-const BULLET_PLAYER_SPEED = 400
 
 function bullet_player(p) {
 add([
