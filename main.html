@@ -49,12 +49,13 @@ layer(["obj","ui"], "obj")
 
 scene("main_menu", () => {
 
+    //spooky ghost and text
+
     const ghost = add([
         sprite("ghost"),
         scale (0.7),
         pos(1200,600),
         ])
-
 
 
     add([
@@ -65,6 +66,8 @@ scene("main_menu", () => {
         font: "sink", 
     }
     )])
+
+    //add button function
 
 function addButton(txt, p, f) {
 
@@ -85,8 +88,10 @@ function addButton(txt, p, f) {
 
 }
 
+// menu buttons
+
 addButton("Start", vec2(300, 300), () => start())
-addButton("Quit", vec2(300, 700), () => debug.log("Actually this program can't close the browser by itself yet."))
+addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
 
 })
 
@@ -108,7 +113,7 @@ scene("win_0", () => {
     text("LEVEL 1.\n \nInvaders count: 24.\n\nTime: 30 seconds.\n\nEliminate invaders.\n\nPress any key to continue!", {
         size: 48,
         width: 1400, 
-        font: "sink", // there're 4 built-in fonts: "apl386", "apl386o", "sink", and "sinko"
+        font: "sink", //  "apl386", "apl386o", "sink", "sinko"
     }),
     onClick(() => go("game_1"))
 ])
@@ -119,7 +124,6 @@ function start() {
 }
 
      
-
 // -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
 
 scene("game_1", () => {
