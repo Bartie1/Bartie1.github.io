@@ -139,9 +139,9 @@ function addLevelWrapper(map_) {
     )
 }
 
-// doggy
+// spawnParticles
 
-function dog() {
+function spawnParticles(x) {
     const sprites = ["star"]
 
     sprites.forEach((spr) => {
@@ -153,7 +153,7 @@ function dog() {
 
         // Compose particle properties with components
         const item = add([
-            pos(player.pos.add(27, 83)),
+            pos(x.pos.add(27, 83)),
             sprite(choose(sprites)),
             origin("center"),
             scale(rand(0.5, 1)),
@@ -217,10 +217,9 @@ const gameLevel = addLevelWrapper(map1)
 
 const player = spawnPlayer()
 
-
 // Particle spawning
 
-dog()
+spawnParticles(player)
 
 // player dies from bullet
 
