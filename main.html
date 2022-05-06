@@ -107,7 +107,7 @@ onUpdate(() => cursor("default"))
 
 
 function spawnPlayer() {
-    player = add([
+    const player = add([
         sprite("space-ship"),
         scale (0.5),
         pos(910,800),
@@ -375,6 +375,21 @@ height: 130,
 "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
 })
 
+// addLevelWrapper(map_) {
+//     return addLevel(
+//         map_, 
+//         {
+//             width: 25,
+//             height: 130,
+
+//             "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+//             "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+//             "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+//         }
+//     )
+// }
+
+// const gameLevel = addLevelWrapper(map1)
 
 // player & controls
 
