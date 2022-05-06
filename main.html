@@ -45,6 +45,10 @@ loadSound("pow", "sounds/poow.mp3")
 layer(["obj","ui"], "obj")
 
 
+// set global volume
+
+volume(0.2)
+
 // -------------------------------------------------- Main menu  ------------------------------------------------------------------------                                           
 
 scene("main_menu", () => {
@@ -103,6 +107,10 @@ onUpdate(() => cursor("default"))
 
 //---------------------------------- essential stuff
 
+const MOVE_SPEED = 800
+
+
+// spawn player function
 
 function spawnPlayer() {
     const player = add([
@@ -114,6 +122,8 @@ function spawnPlayer() {
         ])
     return player
 }
+
+// level wrapper for all levels
 
 function addLevelWrapper(map_) {
     return addLevel(
@@ -129,11 +139,6 @@ function addLevelWrapper(map_) {
     )
 }
 
-function musicOn() {
-    const music = play("main")
-    volume(0.2)
-    return music
-}
 
 //----------------------------------------------------------------------------------
 
@@ -165,7 +170,7 @@ function start() {
 
 scene("game_1", () => {
 
-const music = musicOn()
+const music = play("main")
 
 //game area
 
@@ -183,8 +188,6 @@ const map1 = [
 const gameLevel = addLevelWrapper(map1)
 
 // player & controls
-
-const MOVE_SPEED = 800
 
 const player = spawnPlayer()
 
@@ -387,8 +390,6 @@ const gameLevel = addLevelWrapper(map2)
 // const gameLevel = addLevelWrapper(map2)
 
 // player & controls
-
-const MOVE_SPEED = 800
 
 const player = spawnPlayer()
 
@@ -708,8 +709,6 @@ const map3 = [
 const gameLevel = addLevelWrapper(map3)
 
 // player & controls
-
-const MOVE_SPEED = 800
 
 const player = spawnPlayer()
 
@@ -1042,8 +1041,6 @@ const gameLevel = addLevelWrapper(map4)
 
 
 // player & controls
-
-const MOVE_SPEED = 800
 
 const player = spawnPlayer()
 
@@ -1386,8 +1383,6 @@ const gameLevel = addLevelWrapper(map5)
 
 
 // player & controls
-
-const MOVE_SPEED = 800
 
 const player = spawnPlayer()
 
