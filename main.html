@@ -137,6 +137,19 @@ function start() {
 	go("win_0")
 }
 
+function addLevelWrapper(map_) {
+    return addLevel(
+        map_, 
+        {
+            width: Math.floor(window.innerWidth/69),
+            height: Math.floor(window.innerHeight/8),
+
+            "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+            "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+            "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+        },
+    )
+}
      
 // -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
 
@@ -147,7 +160,25 @@ volume(0.2)
 
 //game area
 
-    const gameLevel = addLevel([
+    // const gameLevel = addLevel([
+    // "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+    // "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
+    // "!                                                                   &", 
+    // "!                                                                   &", 
+    // "!                                                                   &", 
+    // "!                                                                   &",  
+    // "!                                                                   &", 
+    // "!                                                                   &",  
+    // ], {
+    // width: 25,
+    // height: 130,
+
+    // "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
+    // "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
+    // "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
+    // })
+
+const map1 = [
     "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
     "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
     "!                                                                   &", 
@@ -155,17 +186,11 @@ volume(0.2)
     "!                                                                   &", 
     "!                                                                   &",  
     "!                                                                   &", 
-    "!                                                                   &",  
-    ], {
-    width: 25,
-    height: 130,
+    "!                                                                   &",   
+]
 
-    "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
-    "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
-    "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
-    })
+const gameLevel = addLevelWrapper(map1)
 
-    
 // player & controls
 
 const MOVE_SPEED = 800
@@ -373,7 +398,7 @@ scene("game_2", () => {
 // "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
 // })
 
-const map1 = [
+const map2 = [
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &",  
@@ -384,21 +409,7 @@ const map1 = [
 "!                                                                   &",  
 ];
 
-function addLevelWrapper(map_) {
-    return addLevel(
-        map_, 
-        {
-            width: Math.floor(window.screen.availWidth/69),
-            height: Math.floor(window.screen.availHeight/8),
-
-            "!": () => [sprite("wall"), "left_wall", area(), solid(), scale(0.4)],
-            "&": () => [sprite("wall"), "right_wall", area(), solid(), scale(0.4)],
-            "^": () => [sprite("invader"), "space_invader", area(), solid(), scale(0.2),]
-        },
-    )
-}
-
-const gameLevel = addLevelWrapper(map1)
+const gameLevel = addLevelWrapper(map2)
 
 // player & controls
 
