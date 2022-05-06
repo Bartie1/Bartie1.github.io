@@ -107,7 +107,7 @@ onUpdate(() => cursor("default"))
 
 
 function spawnPlayer() {
-    const player = add([
+    return add([
         sprite("space-ship"),
         scale (0.5),
         pos(910,800),
@@ -171,7 +171,7 @@ volume(0.2)
 
 const MOVE_SPEED = 800
 
-spawnPlayer()
+const player = spawnPlayer()
 
 
 // Particle spawning
