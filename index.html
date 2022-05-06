@@ -8,50 +8,65 @@
 
     <style>
         body {
-          background-color: rgb(172, 151, 248);
+          background-color: black;
         }
         
         .text {
         font-size: 40px;
         font-family: Georgia, 'Times New Roman', Times, serif;
-        color: maroon;
+        color: white;
         }
+
+        main {
+          text-align: center;
+          margin-top: 300px;
+        }
+
+        p {
+          color:white
+        }
+
     </style>
 
 <body>
 
 <script>
 
-// Assign Password to move to next document
+  // Assign Password to move to next document
 
-var password = "password1"
+  var password = "Bee_gees"
 
-// check the password
+  // check the password
 
-function goToGame() {
+  function goToGame() {
 
-  var check_input = document.getElementById("password-input").value;
-  if (check_input == password) {
-    window.location.assign("main.html") 
+    var check_input = document.getElementById("password-input").value;
+    if (check_input == password) {
+      window.location.assign("main.html") 
+    }
+    else {
+        alert("Wrong password. Please try again.")
+    }
   }
-  else {
-      alert("Wrong password. Please try again.")
-  }
-}
 
 </script>
 
-<h3 class="text">Please input the password to move to Puzzle 3</h3>
+<main>
 
-<input class="button" type="text" id="password-input">
+  <h3 class="text">Please input the password to move to Puzzle 3</h3>
 
-<button class="button" onclick="goToGame()">Submit</button><br><br>
+  <input class="button" type="text" id="password-input">
 
-<!-- reveal button -->
+  <button class="button" onclick="goToGame()">Submit</button><br><br>
 
-<button onclick="document.getElementById('reveal').innerHTML=password">Reveal the password</button>
+  <!-- reveal button -->
 
-<p id="reveal"></p>
+  <button onclick="document.getElementById('reveal').innerHTML=password">Reveal the password</button>
+
+  <p id="reveal"></p>
+
+</main>
+
 
 </body>
 </html>
