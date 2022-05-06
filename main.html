@@ -325,6 +325,12 @@ player.onCollide("space_invader", () => {
 
 // invaders fall down the screen - define
 
+action("space_invader", (s) => {
+if (s.pos.y >= height() ) {
+go("win_35", {score: score.value })
+}
+})
+
 
 // invader collides with player bullets
 
@@ -1097,7 +1103,11 @@ go("win_35", {score: score.value})
 
 // invaders fall down the screen
 
-
+action("space_invader", (s) => {
+if (s.pos.y >= height() ) {
+go("win_35", {score: score.value })
+}
+})
 
 // invader collides with player bullets
 
