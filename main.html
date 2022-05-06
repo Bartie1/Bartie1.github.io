@@ -107,7 +107,7 @@ onUpdate(() => cursor("default"))
 
 
 function spawnPlayer() {
-    add([
+    const player = add([
         sprite("space-ship"),
         scale (0.5),
         pos(910,800),
@@ -197,10 +197,6 @@ loop(0.1, () => {
 	])
 
 })
-
-
-// player dies from space invader collision
-
 
 
 // player dies from bullet
