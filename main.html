@@ -123,6 +123,33 @@ function spawnPlayer() {
     return player
 }
 
+// player key controlls
+
+function defineControls(target){
+
+keyDown("left", () => {
+target.move(-MOVE_SPEED, 0)
+if (target.pos.x < 0) {
+			target.pos.x = width()
+		}
+})
+
+keyDown("right", () => {
+target.move(MOVE_SPEED, 0)
+if (target.pos.x > width()) {
+			target.pos.x = 0
+		}
+})
+
+onKeyDown("up", () => {
+target.move(0, -MOVE_SPEED)
+})
+
+onKeyDown("down", () => {
+target.move(0, MOVE_SPEED)
+})
+}
+
 // level wrapper for all levels
 
 function addLevelWrapper(map_) {
@@ -164,6 +191,8 @@ function spawnParticles(target) {
 
     })
 }
+
+
 
 
 //----------------------------------------------------------------------------------
@@ -221,6 +250,10 @@ const player = spawnPlayer()
 
 spawnParticles(player)
 
+// define controls
+
+defineControls(player)
+
 // player dies from bullet
 
     player.onCollide("bullet", (bullet) => {
@@ -230,29 +263,7 @@ spawnParticles(player)
         go("lose", { score: score.value})
     })
 
-// player key controlls
 
-keyDown("left", () => {
-player.move(-MOVE_SPEED, 0)
-if (player.pos.x < 0) {
-			player.pos.x = width()
-		}
-})
-
-keyDown("right", () => {
-player.move(MOVE_SPEED, 0)
-if (player.pos.x > width()) {
-			player.pos.x = 0
-		}
-})
-
-onKeyDown("up", () => {
-player.move(0, -MOVE_SPEED)
-})
-
-onKeyDown("down", () => {
-player.move(0, MOVE_SPEED)
-})
 
 // spawning bullets player
 
