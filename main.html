@@ -159,13 +159,10 @@ volume(0.2)
     const player = add([
         sprite("space-ship"),
         scale (0.5),
-        pos(530,800),
+        pos(1200,800),
         area(),
-        solid()
+        solid(),
         ])
-
-if (player.pos > 2000,1100){
-    go("win_0")}
 
 
 // Particle spawning
@@ -283,6 +280,12 @@ every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
 })
+})
+
+// invaders collide with player
+
+player.onCollide("space_invader", () => {
+    go("lose", {score: score.value})
 })
 
 // invaders fall down the screen
