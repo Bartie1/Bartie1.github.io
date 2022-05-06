@@ -101,6 +101,21 @@ addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't c
 
 onUpdate(() => cursor("default"))
 
+
+
+//---------------------------------- essential stuff
+
+
+function spawnPlayer() {
+    add([
+        sprite("space-ship"),
+        scale (0.5),
+        pos(910,800),
+        area(),
+        solid(),
+        ])
+}
+
 // start program with main menu scene
 
 go("main_menu")
@@ -122,20 +137,6 @@ scene("win_0", () => {
 function start() {
 	go("win_0")
 }
-
-//----------------------------------
-
-
-function spawnPlayer() {
-    add([
-        sprite("space-ship"),
-        scale (0.5),
-        pos(910,800),
-        area(),
-        solid(),
-        ])
-}
-
 
      
 // -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
