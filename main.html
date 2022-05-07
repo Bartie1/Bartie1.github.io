@@ -171,27 +171,26 @@ function addLevelWrapper(map_) {
 
 // defining small invaders behaviour
 
-let invader_speed = 300
 const LEVEL_DOWN = 500
 
 
-function invadersMove(){
+function invadersMove(speed){
 
 action("space_invader", (s) => {
-    s.move(invader_speed, 0)
+    s.move(speed, 0)
 })
 
 // invaders colide with walls
 
 collides("space_invader", "right_wall", () => {
-    invader_speed = -300
+    speed = -speed
     every("space_invader", (s) => {
         s.move(0, LEVEL_DOWN)
     })
 })
 
 collides("space_invader", "left_wall", () => {
-    invader_speed = 300
+    //speed = -speed
     every("space_invader", (s) => {
         s.move(0, LEVEL_DOWN)
     })
@@ -322,9 +321,9 @@ bullet_player(player.pos.add(30,-5)),
 play("shoot")
 })
 
-// 
+// trigger movement
 
-invadersMove()
+invadersMove(300)
 
 
 // invaders collide with player
@@ -467,30 +466,9 @@ bullet_player(player.pos.add(30,-5))
 play("shoot")
 })
 
-// invaders move speed
+// trigger movement
 
-let invader_speed = 300
-const LEVEL_DOWN = 500
-
-action("space_invader", (invader) => {
-invader.move(invader_speed, 0)
-})
-
-// invaders colide with walls
-
-collides("space_invader", "right_wall", () => {
-invader_speed = -300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
-})
-
-collides("space_invader", "left_wall", () => {
-invader_speed = 300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
-})
-})
-})
+invadersMove()
 
 // invaders collide with player
 
@@ -746,30 +724,9 @@ bullet_player(player.pos.add(30,-5))
 play("shoot")
 })
 
-// invaders move speed
+// trigger movement
 
-let invader_speed = 300
-const LEVEL_DOWN = 500
-
-action("space_invader", (invader) => {
-invader.move(invader_speed, 0)
-})
-
-// invaders colide with walls
-
-collides("space_invader", "right_wall", () => {
-invader_speed = -300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
-})
-
-collides("space_invader", "left_wall", () => {
-invader_speed = 300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
-})
-})
-})
+invadersMove()
 
 // invaders collide with player
 
@@ -1038,30 +995,9 @@ bullet_player(player.pos.add(30,-5))
 play("shoot")
 })
 
-// invaders move speed
+// trigger movement
 
-let invader_speed = 300
-const LEVEL_DOWN = 500
-
-action("space_invader", (invader) => {
-invader.move(invader_speed, 0)
-})
-
-// invaders colide with walls
-
-collides("space_invader", "right_wall", () => {
-invader_speed = -300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
-})
-
-collides("space_invader", "left_wall", () => {
-invader_speed = 300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
-})
-})
-})
+invadersMove()
 
 // invaders collide with player
 
@@ -1341,28 +1277,13 @@ play("shoot")
 
 // invaders move speed
 
+
+
+// trigger movement
+
+invadersMove()
+
 let invader_speed = 700
-const LEVEL_DOWN = 500
-
-action("space_invader", (invader) => {
-invader.move(invader_speed, 0)
-})
-
-// invaders colide with walls
-
-collides("space_invader", "right_wall", () => {
-invader_speed = -300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
-})
-
-collides("space_invader", "left_wall", () => {
-invader_speed = 300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
-})
-})
-})
 
 // invaders collide with player
 
