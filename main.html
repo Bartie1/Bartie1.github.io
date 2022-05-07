@@ -173,7 +173,7 @@ function addLevelWrapper(map_) {
 
 let LEVEL_DOWN = 500
 
-function invadersMove(speed_right, speed_left){
+function invadersMove(speed_right, speed_left, speed centre){
     action("space_invader", (s) => {
         s.move(speed_right, 0)
     })
@@ -188,7 +188,7 @@ function invadersMove(speed_right, speed_left){
     })
 
     collides("space_invader", "left_wall", () => {
-        speed_left = speed_right
+        speed_right = speed_centre
         every("space_invader", (s) => {
             s.move(0, LEVEL_DOWN)
         })
@@ -321,7 +321,7 @@ play("shoot")
 
 // trigger movement
 
-invadersMove(300,-300)
+invadersMove(300,-300, 300)
 
 
 // invaders collide with player
