@@ -233,7 +233,7 @@ function player_bullets_collide_with_invaders(target_next_level, target_score, t
 
 function player_dies_from_bullets(target, target_score) {
 
-    player.onCollide("bullet", (bullet) => {
+    target.onCollide("bullet", (bullet) => {
         destroy(bullet)
         destroy(target)
         addKaboom(bullet.pos)
