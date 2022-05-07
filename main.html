@@ -257,14 +257,14 @@ function spawnScore() {
     return score
 }
 
-function spawnTimer(target_repeat_level) {
+function spawnTimer(target_repeat_level, target_time_left) {
     const timer = add([
         text("0"),
         pos(10, 20),
         scale(1),
         layer("ui"),
                 {
-                time: TIME_LEFT
+                time: target_time_left
                 },
             ])
 
@@ -305,47 +305,23 @@ const map1 = [
 
 const gameLevel = addLevelWrapper(map1)
 
-// player & controls
-
 const player = spawnPlayer() // spawn player
 const score = spawnScore() // score display
 let repeat_level = "lose"
 let next_level = "win_1"
 let score_required_for_next_lvl = 24
+let time_left = 30 
 
-// Particle spawning
+spawnParticles(player) // Particle spawning
+defineControls(player) // define controls
+spawn_player_bullets_on_hitting_space(player) // spawning bullets player
+invadersMove(300) // trigger invader's movement
+player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
+player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
+player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
 
-spawnParticles(player)
-
-// define controls
-
-defineControls(player)
-
-// spawning bullets player
-
-spawn_player_bullets_on_hitting_space(player)
-
-// trigger movement
-
-invadersMove(300)
-
-// player dies from bullet
-
-player_dies_from_bullets(repeat_level, player, score)
-
-// invaders collide with player
-
-player_dies_if_collides_with_invaders(repeat_level, player, score)
-
-// invader collides with player bullets
-
-player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl)
-
-// timer display
-
-const TIME_LEFT = 30
-
-const timer = spawnTimer(repeat_level)
+// time left in the round until lose
+const timer = spawnTimer(repeat_level, time_left) // spawn timer
 
 // -------------------------------------------------- Game level 1 end ------------------------------------------------------------------------       
 
