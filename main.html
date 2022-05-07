@@ -237,7 +237,7 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
 
 //---------------------------------
 
-function spanwnPowerfulInvaders(target_invaders, target_player, target_score) {
+function spanwnPowerfulInvaders(target_invaders, target_player, target_score, target_powerful_invaders_speed, target_powerful_invaders_bullet_speed) {
     
 
     target_invaders.forEach(powerful_invader => {
@@ -251,7 +251,7 @@ function spanwnPowerfulInvaders(target_invaders, target_player, target_score) {
                 const dir = target_player.pos.sub(powerful_invader.pos).unit()    
                 add ([
                     pos(powerful_invader.pos),
-                    move(dir, BULLET_SPEED),
+                    move(dir, target_powerful_invaders_bullet_speed),
                     rect(30,10),
                     area(),
                     cleanup(),
@@ -273,17 +273,17 @@ function spanwnPowerfulInvaders(target_invaders, target_player, target_score) {
 
         powerful_invader.onStateUpdate("move", () => {
             if (!target_player.exists()) return
-            powerful_invader.move(ENEMY_SPEED, 0)
+            powerful_invader.move(target_powerful_invaders_speed, 0)
         })
 
         powerful_invader.onStateUpdate("attack", () => {
             if (!target_player.exists()) return
-            powerful_invader.move(ENEMY_SPEED, 0)
+            powerful_invader.move(target_powerful_invaders_speed, 0)
         })
 
         powerful_invader.onStateUpdate("idle", () => {
             if (!target_player.exists()) return
-            powerful_invader.move(ENEMY_SPEED, 0)
+            powerful_invader.move(target_powerful_invaders_speed, 0)
         })
 
         powerful_invader.enterState("idle")
@@ -442,8 +442,8 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 // --------------- LEVEL 2 ADDING POWEFUL INVADERS -------------
 
-const ENEMY_SPEED = 400
-const BULLET_SPEED = 800
+const powerful_invaders_speed = 400
+const powerful_invaders_bullet_speed = 800
 
 
 const powerful_invader = add ([
@@ -469,7 +469,7 @@ const powerful_invader = add ([
 const invaders = [powerful_invader, powerful_invader2]
 
 
-spanwnPowerfulInvaders(invaders, player, score)
+spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_speed, powerful_invaders_bullet_speed)
 
 })
 
