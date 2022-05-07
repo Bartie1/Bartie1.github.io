@@ -267,10 +267,10 @@ function spawnTimer(target_repeat_level, target_time_left) {
             ])
 
         timer.action(() => {
-        timer.time -= dt()
-        timer.text = timer.time.toFixed(1)
-        if (timer.time <= 0) {
-            go(target_repeat_level)
+            timer.time -= dt()
+            timer.text = timer.time.toFixed(1)
+            if (timer.time <= 0) {
+                go(target_repeat_level)
         }
     })
     return timer
@@ -300,7 +300,7 @@ const map1 = [
 
 const gameLevel = addLevelWrapper(map1)
 
-let repeat_level = "lose" // repeat current level
+let repeat_level = "win_0" // repeat current level
 let next_level = "win_1" // next level
 let score_required_for_next_lvl = 24 // score required to move to next round
 let time_left = 30 // show time to complete the round
@@ -1113,28 +1113,6 @@ onClick(() => go("main_menu"))
 
 ])
 })
-
-// scene lose
-
-scene("lose", () => {
-
-    add([
-    pos(500, 250),
-text("You lost! Your score: " + score.text + "\n\n You could always try again? \n\nMouse click to go to menu\n\n",
-{
-        size: 48, 
-        width: 1400, 
-        font: "sink", 
-}),
-scale(0.7),
-pos(400.400),
-music.pause(),
-onClick(() => go("main_menu"))
-
-
-])
-})    
-
 
 // start program with main menu scene
 
