@@ -257,6 +257,26 @@ function spawnScore() {
     return score
 }
 
+function spawnTimer(target_repeat_level) {
+    const timer = add([
+        text("0"),
+        pos(10, 20),
+        scale(1),
+        layer("ui"),
+                {
+                time: TIME_LEFT
+                },
+            ])
+
+        timer.action(() => {
+        timer.time -= dt()
+        timer.text = timer.time.toFixed(1)
+        if (timer.time <= 0) {
+            go(target_repeat_level)
+        }
+    })
+    return timer
+}
 
 //----------------------------------------------------------------------------------
 
@@ -321,29 +341,11 @@ player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl)
 
-
 // timer display
 
 const TIME_LEFT = 30
 
-const timer = add([
-text("0"),
-pos(10, 20),
-scale(1),
-layer("ui"),
-        {
-        time: TIME_LEFT
-        },
-    ])
-
-timer.action(() => {
-timer.time -= dt()
-timer.text = timer.time.toFixed(1)
-if (timer.time <= 0) {
-    go(repeat_level)
-}
-
-})
+const timer = spawnTimer(repeat_level)
 
 // -------------------------------------------------- Game level 1 end ------------------------------------------------------------------------       
 
@@ -369,7 +371,8 @@ const gameLevel = addLevelWrapper(map2)
 
 // player & controls
 
-const player = spawnPlayer()
+const player = spawnPlayer() // spawn player
+const score = spawnScore() // score display
 let repeat_level = "win_1"
 let next_level = "win_2"
 let score_required_for_next_lvl = 38
