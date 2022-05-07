@@ -53,11 +53,11 @@ volume(0.4)
 
 onUpdate(() => cursor("default"))
 
-//---------------------------------- essential stuff that repeats itself across levels
+//--- define functions and constants that repeat themselves across levels
 
 const MOVE_SPEED = 800 // player move speed
 const BULLET_PLAYER_SPEED = 400 // player bullet speed
-
+const LEVEL_DOWN = 500 // specifies for how much invaders move down each bounce
 
 // spawn player function
 
@@ -72,21 +72,21 @@ function spawnPlayer() {
     return player
 }
 
-// player key controlls
+// player key controlls & movement
 
 function defineControls(target){
 
 keyDown("left", () => {
-target.move(-MOVE_SPEED, 0)
-if (target.pos.x < 0) {
-			target.pos.x = width()
+    target.move(-MOVE_SPEED, 0)
+    if (target.pos.x < 0) {
+                target.pos.x = width()
 		}
 })
 
 keyDown("right", () => {
-target.move(MOVE_SPEED, 0)
-if (target.pos.x > width()) {
-			target.pos.x = 0
+    target.move(MOVE_SPEED, 0)
+    if (target.pos.x > width()) {
+                target.pos.x = 0
 		}
 })
 
@@ -118,8 +118,6 @@ function addLevelWrapper(target_map) {
 }
 
 // defining small invaders behaviour
-
-let LEVEL_DOWN = 500
 
 function invadersMove(speed){
     let ispeed = speed
@@ -171,35 +169,34 @@ function spawnParticles(target) {
 }
 
 
-// spawn player's bullets on all levels
+// spawn player's bullets when space is hit
 
 function spawn_player_bullets_on_hitting_space(target) {
 
     function bullet_player(p) {
-add([
-    area(),
-    rect(6,18),
-    pos(p),
-    origin("center"),
-    color(0, 255, 255),
-    "bullet_player"
-    ])
+    add([
+        area(),
+        rect(6,18),
+        pos(p),
+        origin("center"),
+        color(0, 255, 255),
+        "bullet_player"
+        ])
+    }
+
+    action("bullet_player", (b_p) => {
+            b_p.move(0, -BULLET_PLAYER_SPEED)
+            if (b_p.pos.y < 0){
+                destroy(b_p)
+            }
+        })
+
+    keyPress("space", () => {
+        bullet_player(target.pos.add(30,-5)),
+        play("shoot")
+    })
+
 }
-
-action("bullet_player", (b_p) => {
-b_p.move(0, -BULLET_PLAYER_SPEED)
-if (b_p.pos.y < 0){
-    destroy(b_p)
-}
-})
-
-keyPress("space", () => {
-bullet_player(target.pos.add(30,-5)),
-play("shoot")
-})
-
-}
-
 
 // die if player colldes with invaders
 
@@ -214,7 +211,6 @@ function player_dies_if_collides_with_invaders(target_repeat_level, target, targ
 // space invader collides with player's bullets + scoreupdate
 
 function player_bullets_collide_with_invaders(target_next_level, target_score, target_score_required_for_next_level){
-
 
     collides("bullet_player", "space_invader", (b,s) => {
         destroy(b)
@@ -250,12 +246,14 @@ function spawnScore() {
     pos(20, 180),
     layer("ui"),
     scale(1),
-    {
-        value: 0,
-    }
+        {
+            value: 0,
+        }
     ])
     return score
 }
+
+// spawn timer that when ends the player loses
 
 function spawnTimer(target_repeat_level, target_time_left) {
     const timer = add([
@@ -279,9 +277,6 @@ function spawnTimer(target_repeat_level, target_time_left) {
 }
 
 //----------------------------------------------------------------------------------
-
-
-
 
      
 // -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
