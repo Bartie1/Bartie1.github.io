@@ -241,6 +241,8 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
     })
 }
 
+// spawn score
+
 function spawnScore() {
 
     const score = add([
@@ -300,13 +302,7 @@ defineControls(player)
 
 // player dies from bullet
 
-    player.onCollide("bullet", (bullet) => {
-        destroy(bullet)
-        destroy(player)
-        addKaboom(bullet.pos)
-        go(repeat_level, { score: score.value})
-    })
-
+player_dies_from_bullets(repeat_level, player, score)
 
 // spawning bullets player
 
@@ -384,15 +380,6 @@ let score_required_for_next_lvl = 38
 // Particle spawning
 
 spawnParticles(player)
-
-// player dies from bullet
-
-player.onCollide("bullet", (bullet) => {
-    destroy(bullet)
-    destroy(player)
-    addKaboom(bullet.pos)
-    go(repeat_level, { score: score.value})
-})
 
 // player key controlls
 
@@ -600,12 +587,7 @@ spawnParticles(player)
 
 // player dies from bullet
 
-player.onCollide("bullet", (bullet) => {
-    destroy(bullet)
-    destroy(player)
-    addKaboom(bullet.pos)
-    go(repeat_level, { score: score.value})
-})
+player_dies_from_bullets(repeat_level, player, score)
 
 // player key controlls
 
@@ -822,12 +804,7 @@ let score_required_for_next_lvl = 52
 
 // player dies from bullet
 
-player.onCollide("bullet", (bullet) => {
-    destroy(bullet)
-    destroy(player)
-    addKaboom(bullet.pos)
-    go(repeat_level, { score: score.value})
-})
+player_dies_from_bullets(repeat_level, player, score)
 
 // player key controlls
 
@@ -1054,12 +1031,7 @@ spawnParticles(player)
 
 // player dies from bullet
 
-player.onCollide("bullet", (bullet) => {
-    destroy(bullet)
-    destroy(player)
-    addKaboom(bullet.pos)
-    go(repeat_level, { score: score.value})
-})
+player_dies_from_bullets(repeat_level, player, score)
 
 // player key controlls
 
