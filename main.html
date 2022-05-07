@@ -418,8 +418,11 @@ spawnParticles(player)
 
 // player dies from space invader collision
 
+let repeat_level = "win_1"
+
+
 player.onCollide("invader", (invader) => {
-    go("win_1", { score: score.value})
+    go(repeat_level, { score: score.value})
     })
 
 // player dies from bullet
@@ -428,7 +431,7 @@ player.onCollide("bullet", (bullet) => {
     destroy(bullet)
     destroy(player)
     addKaboom(bullet.pos)
-    go("win_1", { score: score.value})
+    go(repeat_level, { score: score.value})
 })
 
 // player key controlls
@@ -445,8 +448,10 @@ invadersMove(300)
 
 // invaders collide with player
 
+
+
 player.onCollide("space_invader", () => {
-go("win_1", {score: score.value})
+go(repeat_level, {score: score.value})
 })
 
 // invaders fall down the screen
@@ -1181,11 +1186,7 @@ defineControls(player)
 
 spawn_player_bullets_on_hitting_space(player)
 
-// invaders move speed
-
-
-
-// trigger movement
+// invaders move speed & trigger movements
 
 invadersMove(700)
 
