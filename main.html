@@ -47,7 +47,10 @@ layer(["obj","ui"], "obj")
 
 // set global volume
 
-const music = play("main")
+const music = play("main", {
+    loop: true
+    })
+    
 music.pause()
 volume(0.4)
 
