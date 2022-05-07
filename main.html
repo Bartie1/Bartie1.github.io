@@ -146,7 +146,7 @@ onKeyDown("up", () => {
     if (target.pos.y <= 1060) {
         target.move(0, -MOVE_SPEED)
     } 
-    else if (target.pos.y > 1060) {
+    else if (target.pos.y > 1040) {
         go("lose")
     }
 }
@@ -156,7 +156,7 @@ onKeyDown("down", () => {
     if (target.pos.y <= 1060) {
         target.move(0, MOVE_SPEED)
     } 
-    else if (target.pos.y > 1060) {
+    else if (target.pos.y > 1040) {
         go("lose")
 }
 })
