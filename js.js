@@ -355,10 +355,7 @@ function spawnTimer(target_repeat_level, target_time_left) {
 
 scene("game_1", () => {
 
-    const music = play("main2", {
-        volume: 5,
-        loop: true
-        })
+    const music = play("main2")
 
 //game area
 
@@ -398,7 +395,6 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 scene("game_2", () => {
 
-    music.play()
 
 //game area
 
