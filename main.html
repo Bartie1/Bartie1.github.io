@@ -305,6 +305,9 @@ const gameLevel = addLevelWrapper(map1)
 
 const player = spawnPlayer()
 
+let repeat_level = "lose"
+let next_level = "win_1"
+
 // Particle spawning
 
 spawnParticles(player)
@@ -319,7 +322,7 @@ defineControls(player)
         destroy(bullet)
         destroy(player)
         addKaboom(bullet.pos)
-        go("lose", { score: score.value})
+        go(repeat_level, { score: score.value})
     })
 
 
@@ -334,7 +337,7 @@ invadersMove(300)
 // invaders collide with player
 
 player.onCollide("space_invader", () => {
-    go("lose", {score: score.value})
+    go(repeat_level, {score: score.value})
 })
 
 // invader collides with player bullets
@@ -347,7 +350,7 @@ player.onCollide("space_invader", () => {
     score.text = score.value
     play("explosion")
     if (score.value == 24) {
-        go("win_1")
+        go(next_level)
     }
 })
 
@@ -381,7 +384,7 @@ timer.action(() => {
 timer.time -= dt()
 timer.text = timer.time.toFixed(1)
 if (timer.time <= 0) {
-    go("lose")
+    go(repeat_level)
 }
 
 })
