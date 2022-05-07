@@ -905,11 +905,13 @@ const player = spawnPlayer()
 // Particle spawning
 
 spawnParticles(player)
+let repeat_level = "win_35"
+let next_level = "win_4"
     
 // player dies from space invader collision
 
 player.onCollide("invader", (invader) => {
-    go("win_35", { score: score.value})
+    go(repeat_level, { score: score.value})
     })
 
 // player dies from bullet
@@ -918,7 +920,7 @@ player.onCollide("bullet", (bullet) => {
     destroy(bullet)
     destroy(player)
     addKaboom(bullet.pos)
-    go("win_35", { score: score.value})
+    go(repeat_level, { score: score.value})
 })
 
 // player key controlls
@@ -936,7 +938,7 @@ invadersMove(300)
 // invaders collide with player
 
 player.onCollide("space_invader", () => {
-go("win_35", {score: score.value})
+go(repeat_level, {score: score.value})
 })
 
 // invaders fall down the screen
@@ -952,7 +954,7 @@ score.value++
 score.text = score.value
 play("explosion")
 if (score.value == 52) {
-    go("win_4")
+    go(next_level)
 }
 })
 
@@ -986,7 +988,7 @@ timer.action(() => {
 timer.time -= dt()
 timer.text = timer.time.toFixed(1)
 if (timer.time <= 0) {
-go("win_3.5")
+go(repeat_level)
 }
 
 })
@@ -1159,6 +1161,8 @@ const gameLevel = addLevelWrapper(map5)
 // player & controls
 
 const player = spawnPlayer()
+let repeat_level = "win_4"
+let next_level = "win_5"
 
 // Particle spawning
 
@@ -1167,7 +1171,7 @@ spawnParticles(player)
 // player dies from space invader collision
 
 player.onCollide("invader", (invader) => {
-    go("win_4", { score: score.value})
+    go(repeat_level, { score: score.value})
     })
 
 // player dies from bullet
@@ -1176,7 +1180,7 @@ player.onCollide("bullet", (bullet) => {
     destroy(bullet)
     destroy(player)
     addKaboom(bullet.pos)
-    go("win_4", { score: score.value})
+    go(repeat_level, { score: score.value})
 })
 
 // player key controlls
@@ -1194,7 +1198,7 @@ invadersMove(700)
 // invaders collide with player
 
 player.onCollide("space_invader", () => {
-go("win_4", {score: score.value})
+go(repeat_level, {score: score.value})
 })
 
 // invaders fall down the screen
@@ -1210,7 +1214,7 @@ score.value++
 score.text = score.value
 play("explosion")
 if (score.value == 52) {
-    go("win_5")
+    go(next_level)
 }
 })
 
@@ -1244,7 +1248,7 @@ timer.action(() => {
 timer.time -= dt()
 timer.text = timer.time.toFixed(1)
 if (timer.time <= 0) {
-go("win_4")
+go(repeat_level)
 }
 
 })
