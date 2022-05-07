@@ -420,7 +420,6 @@ spawnParticles(player)
 
 let repeat_level = "win_1"
 
-
 player.onCollide("invader", (invader) => {
     go(repeat_level, { score: score.value})
     })
@@ -447,8 +446,6 @@ spawn_player_bullets_on_hitting_space(player)
 invadersMove(300)
 
 // invaders collide with player
-
-
 
 player.onCollide("space_invader", () => {
 go(repeat_level, {score: score.value})
