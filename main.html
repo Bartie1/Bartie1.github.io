@@ -305,12 +305,14 @@ const map1 = [
 
 const gameLevel = addLevelWrapper(map1)
 
-const player = spawnPlayer() // spawn player
-const score = spawnScore() // score display
 let repeat_level = "lose" // repeat current level
 let next_level = "win_1" // next level
 let score_required_for_next_lvl = 24 // score required to move to next round
 let time_left = 30 // show time to complete the round
+
+const player = spawnPlayer() // spawn player
+const score = spawnScore() // score display
+const timer = spawnTimer(repeat_level, time_left) // spawn timer 
 
 spawnParticles(player) // Particle spawning
 defineControls(player) // define controls
@@ -320,7 +322,7 @@ player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
 
-const timer = spawnTimer(repeat_level, time_left) // spawn timer 
+
 
 // -------------------------------------------------- Game level 1 end ------------------------------------------------------------------------       
 
