@@ -20,11 +20,6 @@ loadSound("pow", "sounds/poow.mp3")
 layer(["obj","ui"], "obj")
 
 // set global volume
-
-const music = play("main2", {
-    volume: 5,
-    loop: true
-    })
     
 volume(0.4)
 
@@ -357,7 +352,10 @@ function spawnTimer(target_repeat_level, target_time_left) {
 
 scene("game_1", () => {
 
-    music.play()
+    const music = play("main2", {
+        volume: 5,
+        loop: true
+        })
 
 //game area
 
@@ -452,7 +450,6 @@ const invaders = [powerful_invader, powerful_invader2]
 spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // spawn invaders function that adds AI/bullets/mechanics
 })
  
-//
 // -------------------------------------------------- Game Level 3  ------------------------------------------------------------------------       
 
 scene("game_3", () => {
