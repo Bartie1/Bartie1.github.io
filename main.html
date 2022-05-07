@@ -50,8 +50,8 @@ layer(["obj","ui"], "obj")
 const music = play("main", {
     loop: true
     })
-    
-music.pause()
+
+
 volume(0.4)
 
 // reset cursor to default at frame start for easier cursor management
@@ -1124,6 +1124,8 @@ onClick(() => go("main_menu"))
 // -------------------------------------------------- Main menu  ------------------------------------------------------------------------                                           
 
 scene("main_menu", () => {
+
+music.pause()
 
 //spooky ghost and text
 
