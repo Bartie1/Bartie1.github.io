@@ -2,8 +2,6 @@
 
 -->
 
-
-
 <!DOCTYPE html>
 <html lang="eng"></html>
 
@@ -26,8 +24,6 @@ import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
 
 kaboom({
   background: [0, 0, 0],
-    //height: 1000,
-    //width: 2000,
   fullscreen: true,
 })
 
@@ -44,7 +40,6 @@ loadSound("shoot", "sounds/shoot.mp3")
 loadSound("explosion", "sounds/explosion.mp3")
 loadSound("pow", "sounds/poow.mp3")
 layer(["obj","ui"], "obj")
-
 
 // set global volume
 
@@ -86,24 +81,23 @@ keyDown("left", () => {
     if (target.pos.x < 0) {
                 target.pos.x = width()
 		}
-})
+    })
 
 keyDown("right", () => {
     target.move(MOVE_SPEED, 0)
     if (target.pos.x > width()) {
                 target.pos.x = 0
 		}
-})
+    })
 
 onKeyDown("up", () => {
      target.move(0, -MOVE_SPEED) 
-}
-)
+    })
 
 onKeyDown("down", () => {
     if (target.pos.y <= window.innerHeight*0.95) {
     target.move(0, MOVE_SPEED)} 
-})
+    })
 }
 
 // level wrapper for all levels
@@ -210,7 +204,6 @@ function player_dies_if_collides_with_invaders(target_repeat_level, target, targ
     target.onCollide("space_invader", () => {
         go(target_repeat_level, {target_score: target_score.value})
     })
-
 }
 
 // space invader collides with player's bullets + scoreupdate
@@ -241,6 +234,97 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
         go(target_repeat_level, { target_score: target_score.value})
     })
 }
+
+//---------------------------------
+
+function spanwnPowerfulInvaders(target_invaders, target_player) {
+    
+
+    target_invaders.forEach(powerful_invader => {
+        powerful_invader.onStateEnter("idle", async () =>{
+            await wait(rand(0.1, 1))
+            powerful_invader.enterState("attack")
+        })
+
+    powerful_invader.onStateEnter("attack", async () => {
+        if (powerful_invader.exists()){
+            const dir = target_player.pos.sub(powerful_invader.pos).unit()    
+            add ([
+                pos(powerful_invader.pos),
+                move(dir, BULLET_SPEED),
+                rect(30,10),
+                area(),
+                cleanup(),
+                origin("center"),
+                color(0, 255, 0),
+                play("pow"),
+                "bullet"
+                ])
+            }
+
+        await wait(0.2)
+        powerful_invader.enterState("move")
+        })
+
+        powerful_invader.onStateEnter("move", async () => {
+            await wait(0.2)
+            powerful_invader.enterState("idle")
+    })
+
+        powerful_invader.onStateUpdate("move", () => {
+            if (!target_player.exists()) return
+            powerful_invader.move(ENEMY_SPEED, 0)
+
+        })
+
+        powerful_invader.onStateUpdate("attack", () => {
+            if (!target_player.exists()) return
+            powerful_invader.move(ENEMY_SPEED, 0)
+
+    })
+
+        powerful_invader.onStateUpdate("idle", () => {
+            if (!target_player.exists()) return
+            powerful_invader.move(ENEMY_SPEED, 0)
+
+    })
+
+    powerful_invader.enterState("idle")
+
+    })
+
+    // powerful invaders collide with player bullets
+
+    invaders.forEach(powerful_invader => {
+        powerful_invader.onCollide("bullet_player", (bullet_player) => {
+        destroy(powerful_invader)
+        destroy(bullet_player)
+        score.value++
+        score.text = score.value
+        
+    })
+    })
+
+
+    // powerful_invader collides with walls
+
+
+    invaders.forEach(powerful_invader =>{
+        powerful_invader.onCollide("right_wall", (rightwall) => {
+        ENEMY_SPEED = -400
+        powerful_invader.move(0, LEVEL_DOWN)
+        })
+        
+    invaders.forEach(powerful_invader =>{
+            powerful_invader.onCollide("left_wall", (leftwall) => {
+            ENEMY_SPEED = 400
+            powerful_invader.move(0, LEVEL_DOWN)
+        })
+    })
+    })
+}
+
+//-----------------------
 
 // spawn score
 
@@ -281,8 +365,6 @@ function spawnTimer(target_repeat_level, target_time_left) {
     return timer
 }
 
-//----------------------------------------------------------------------------------
-
      
 // -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
 
@@ -322,8 +404,7 @@ player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
 })
-
-// -------------------------------------------------- Game level 1 end ------------------------------------------------------------------------       
+     
 
 // -------------------------------------------------- Game Level 2  ------------------------------------------------------------------------       
 
@@ -366,7 +447,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 // --------------- LEVEL 2 ADDING POWEFUL INVADERS -------------
 
-let ENEMY_SPEED = 400
+const ENEMY_SPEED = 400
 const BULLET_SPEED = 800
 
 
@@ -392,94 +473,9 @@ const powerful_invader = add ([
 
 const invaders = [powerful_invader, powerful_invader2]
 
-// POWERFUL INVADERS AI followin_1g the pattern = wait, attack, constant movement
 
-invaders.forEach(powerful_invader => {
-    powerful_invader.onStateEnter("idle", async () =>{
-        await wait(rand(0.1, 1))
-        powerful_invader.enterState("attack")
-    })
+spanwnPowerfulInvaders(invaders, player)
 
-    powerful_invader.onStateEnter("attack", async () => {
-        if (powerful_invader.exists()){
-            const dir = player.pos.sub(powerful_invader.pos).unit()    
-        add ([
-            pos(powerful_invader.pos),
-            move(dir, BULLET_SPEED),
-            rect(30,10),
-            area(),
-            cleanup(),
-            origin("center"),
-            color(0, 255, 0),
-            play("pow"),
-            "bullet"
-              ])
-        
-        }
-
-    await wait(0.2)
-    powerful_invader.enterState("move")
-    })
-
-        powerful_invader.onStateEnter("move", async () => {
-	await wait(0.2)
-	powerful_invader.enterState("idle")
-})
-
-        powerful_invader.onStateUpdate("move", () => {
-	if (!player.exists()) return
-    powerful_invader.move(ENEMY_SPEED, 0)
-
-    })
-
-    powerful_invader.onStateUpdate("attack", () => {
-	if (!player.exists()) return
-    powerful_invader.move(ENEMY_SPEED, 0)
-
-})
-
-    powerful_invader.onStateUpdate("idle", () => {
-	if (!player.exists()) return
-    powerful_invader.move(ENEMY_SPEED, 0)
-
-})
-
-
-
-powerful_invader.enterState("idle")
-
-})
-
-
-// powerful invaders collide with player bullets
-
-invaders.forEach(powerful_invader => {
-    powerful_invader.onCollide("bullet_player", (bullet_player) => {
-    destroy(powerful_invader)
-    destroy(bullet_player)
-    score.value++
-    score.text = score.value
-    
-})
-})
-
-
-// powerful_invader collides with walls
-
-
-invaders.forEach(powerful_invader =>{
-    powerful_invader.onCollide("right_wall", (rightwall) => {
-    ENEMY_SPEED = -400
-    powerful_invader.move(0, LEVEL_DOWN)
-    })
-    
-invaders.forEach(powerful_invader =>{
-        powerful_invader.onCollide("left_wall", (leftwall) => {
-        ENEMY_SPEED = 400
-        powerful_invader.move(0, LEVEL_DOWN)
-    })
-})
-})
 })
 
 // ----------- POWERFUL INVADERS END ------------
