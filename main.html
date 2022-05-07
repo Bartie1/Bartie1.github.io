@@ -238,7 +238,7 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
 
 //---------------------------------
 
-function spanwnPowerfulInvaders(target_invaders, target_player, target_score, target_powerful_invaders_speed, target_powerful_invaders_bullet_speed) {
+function spanwnPowerfulInvaders(target_invaders, target_player, target_score, target_powerful_invaders_settings) {
     
 
     target_invaders.forEach(powerful_invader => {
@@ -252,7 +252,7 @@ function spanwnPowerfulInvaders(target_invaders, target_player, target_score, ta
                 const dir = target_player.pos.sub(powerful_invader.pos).unit()    
                 add ([
                     pos(powerful_invader.pos),
-                    move(dir, target_powerful_invaders_bullet_speed),
+                    move(dir, target_powerful_invaders_settings.bullet_speed),
                     rect(30,10),
                     area(),
                     cleanup(),
@@ -274,17 +274,17 @@ function spanwnPowerfulInvaders(target_invaders, target_player, target_score, ta
 
         powerful_invader.onStateUpdate("move", () => {
             if (!target_player.exists()) return
-            powerful_invader.move(target_powerful_invaders_speed, 0)
+            powerful_invader.move(target_powerful_invaders_settings.speed, 0)
         })
 
         powerful_invader.onStateUpdate("attack", () => {
             if (!target_player.exists()) return
-            powerful_invader.move(target_powerful_invaders_speed, 0)
+            powerful_invader.move(target_powerful_invaders_settings.speed, 0)
         })
 
         powerful_invader.onStateUpdate("idle", () => {
             if (!target_player.exists()) return
-            powerful_invader.move(target_powerful_invaders_speed, 0)
+            powerful_invader.move(target_powerful_invaders_settings.speed, 0)
         })
 
         powerful_invader.enterState("idle")
@@ -306,14 +306,14 @@ function spanwnPowerfulInvaders(target_invaders, target_player, target_score, ta
 
     target_invaders.forEach(powerful_invader =>{
         powerful_invader.onCollide("right_wall", (rightwall) => {
-            target_powerful_invaders_speed = -400
+            target_powerful_invaders_settings.speed = -400
             powerful_invader.move(0, LEVEL_DOWN)
             })
         })
         
     target_invaders.forEach(powerful_invader =>{
         powerful_invader.onCollide("left_wall", (leftwall) => {
-            target_powerful_invaders_speed = 400
+            target_powerful_invaders_settings.speed = 400
             powerful_invader.move(0, LEVEL_DOWN)
             })
         })
@@ -443,8 +443,13 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 // --------------- LEVEL 2 ADDING POWEFUL INVADERS -------------
 
-const powerful_invaders_speed = 400
-const powerful_invaders_bullet_speed = 800
+
+let powerful_invader_settings = new Object;
+powerful_invader_settings.speed = 400;
+powerful_invader_settings.bullet_speed = 800;
+powerful_invader_settings.bullet_color = 'red';
+powerful_invader_settings.bullet_size = (20, 20);
+
 
 
 const powerful_invader = add ([
@@ -470,7 +475,7 @@ const powerful_invader = add ([
 const invaders = [powerful_invader, powerful_invader2]
 
 
-spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_speed, powerful_invaders_bullet_speed)
+spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings)
 
 })
 
@@ -554,6 +559,7 @@ const powerful_invader = add ([
 const invaders = [powerful_invader, powerful_invader2, powerful_invader3]
 
 spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_speed, powerful_invaders_bullet_speed)
+
 
 })
 
