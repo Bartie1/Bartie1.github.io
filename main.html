@@ -143,7 +143,7 @@ if (target.pos.x > width()) {
 })
 
 onKeyDown("up", () => {
-    if (target.pos.y <= Math.floor(window.innerHeight)) {
+    if (target.pos.y <= window.innerHeight) {
         target.move(0, -MOVE_SPEED)
     }  
 }
