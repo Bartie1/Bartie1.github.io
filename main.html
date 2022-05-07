@@ -1440,27 +1440,21 @@ const btn = add([
 ])
 
 btn.onClick(f)
-
-
 }
-
-// menu functions
-
-// function start() {
-// 	go("win_0")
-// }
-
-
 
 // menu buttons
 
-addButton("Start", vec2(300, 300), go("win_0"))
+addButton("Start", vec2(300, 300), () => start() )
 addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
 
 })
 
 // -------------------------------------------------- Main menu end  ------------------------------------------------------------------------ 
 
+
+function start() {
+	go("win_0")
+}
 
 go("main_menu")
 
