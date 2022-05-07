@@ -265,19 +265,20 @@ function player_dies_if_collides_with_invaders(target_repeat_level) {
 
 // space invader collides with player's bullets + scoreupdate
 
-function player_bullets_collide_with_invaders(target_next_level)
+function player_bullets_collide_with_invaders(target_next_level){
 
-collides("bullet_player", "space_invader", (b,s) => {
-    destroy(b)
-    destroy(s)
-    addKaboom(b.pos)
-    score.value++
-    score.text = score.value
-    play("explosion")
-    if (score.value == 24) {
-        go(target_next_level)
-    }
-})
+    collides("bullet_player", "space_invader", (b,s) => {
+        destroy(b)
+        destroy(s)
+        addKaboom(b.pos)
+        score.value++
+        score.text = score.value
+        play("explosion")
+        if (score.value == 24) {
+            go(target_next_level)
+        }    
+    })
+}
 
 //----------------------------------------------------------------------------------
 
