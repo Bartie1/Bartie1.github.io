@@ -387,9 +387,6 @@ player_dies_if_collides_with_invaders(repeat_level, player, score)
 player_bullets_collide_with_invaders(next_level, score)
 
 
-
-
-
 // timer display
 
 const TIME_LEFT = 30
@@ -472,41 +469,17 @@ spawn_player_bullets_on_hitting_space(player)
 
 invadersMove(300)
 
+// score display
+
+const score = spawnScore()
+
 // invaders collide with player
 
-player.onCollide("space_invader", () => {
-go(repeat_level, {score: score.value})
-})
-
-// invaders fall down the screen
-
-
+player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 // invader collides with player bullets
 
-collides("bullet_player", "space_invader", (b,s) => {
-destroy(b)
-destroy(s)
-addKaboom(b.pos)
-score.value++
-score.text = score.value
-play("explosion")
-if (score.value == 38) {
-    go(next_level)
-}
-})
-
-// score display
-
-const score = add([
-text("0"),
-pos(20, 180),
-layer("ui"),
-scale(1),
-{
-value: 0,
-}
-])
+player_bullets_collide_with_invaders(next_level, score)
 
 // timer display
 
@@ -710,40 +683,17 @@ spawn_player_bullets_on_hitting_space(player)
 
 invadersMove(300)
 
+// score display
+
+const score = spawnScore()
+
 // invaders collide with player
 
-player.onCollide("space_invader", () => {
-go(repeat_level, {score: score.value})
-})
-
-// invaders fall down the screen
-
+player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 // invader collides with player bullets
 
-collides("bullet_player", "space_invader", (b,s) => {
-destroy(b)
-destroy(s)
-addKaboom(b.pos)
-score.value++
-score.text = score.value
-play("explosion")
-if (score.value == 39) {
-    go(next_level)
-}
-})
-
-// score display
-
-const score = add([
-text("0"),
-pos(20, 180),
-layer("ui"),
-scale(1),
-{
-value: 0,
-}
-])
+player_bullets_collide_with_invaders(next_level, score)
 
 // timer display
 
@@ -960,40 +910,17 @@ spawn_player_bullets_on_hitting_space(player)
 
 invadersMove(300)
 
+// score display
+
+const score = spawnScore()
+
 // invaders collide with player
 
-player.onCollide("space_invader", () => {
-go(repeat_level, {score: score.value})
-})
-
-// invaders fall down the screen
-
+player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 // invader collides with player bullets
 
-collides("bullet_player", "space_invader", (b,s) => {
-destroy(b)
-destroy(s)
-addKaboom(b.pos)
-score.value++
-score.text = score.value
-play("explosion")
-if (score.value == 52) {
-    go(next_level)
-}
-})
-
-// score display
-
-const score = add([
-text("0"),
-pos(20, 180),
-layer("ui"),
-scale(1),
-{
-value: 0,
-}
-])
+player_bullets_collide_with_invaders(next_level, score)
 
 // timer display
 
@@ -1220,40 +1147,17 @@ spawn_player_bullets_on_hitting_space(player)
 
 invadersMove(700)
 
+// score display
+
+const score = spawnScore()
+
 // invaders collide with player
 
-player.onCollide("space_invader", () => {
-go(repeat_level, {score: score.value})
-})
-
-// invaders fall down the screen
-
+player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 // invader collides with player bullets
 
-collides("bullet_player", "space_invader", (b,s) => {
-destroy(b)
-destroy(s)
-addKaboom(b.pos)
-score.value++
-score.text = score.value
-play("explosion")
-if (score.value == 52) {
-    go(next_level)
-}
-})
-
-// score display
-
-const score = add([
-text("0"),
-pos(20, 180),
-layer("ui"),
-scale(1),
-{
-value: 0,
-}
-])
+player_bullets_collide_with_invaders(next_level, score)
 
 // timer display
 
