@@ -442,7 +442,7 @@ const powerful_invaders_settings = {
 }
 
 let powerful_invader_starting_postion_1 = (100, 100) // powerful invader 1, starting position
-let powerful_invader_starting_position_2 = (600, 100) // powerful invader 2, starting position
+let powerful_invader_starting_position_2 = (600, 110) // powerful invader 2, starting position
 let powerful_invader_scale = (0.9) // powerful invaders size
 
 let powerful_invader = invaderWrap(powerful_invader_starting_postion_1, powerful_invader_scale) // wrap starting positions with the rest of args
