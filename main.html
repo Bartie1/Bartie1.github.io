@@ -329,6 +329,8 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 scene("game_2", () => {
 
+    music.play()
+
 //game area
 
 const map2 = [
@@ -1025,6 +1027,9 @@ invaders.forEach(powerful_invader =>{
 // scene win_1
 
 scene("win_1", () => {
+
+    music.pause()
+
     add([
     pos(500, 250),
     text("LEVEL 2.\n \nInvaders count: 36.\n\nPOWERFUL INVADERS count: 2\n\nTime: 40 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
