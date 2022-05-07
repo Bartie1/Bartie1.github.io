@@ -1264,19 +1264,7 @@ invaders.forEach(powerful_invader =>{
 // -------------------------------------------------- S-C-E-N-E-S ------------------------------------------------------------------------   
 
 
-// scene win_0 - prompt after starting game
 
-scene("win_0", () => {
-    add([
-    pos(500, 250),
-    text("LEVEL 1.\n \nInvaders count: 24.\n\nTime: 30 seconds.\n\nEliminate invaders.\n\nPress any key to continue!", {
-        size: 48,
-        width: 1400, 
-        font: "sink", //  "apl386", "apl386o", "sink", "sinko"
-    }),
-    onClick(() => go("game_1"))
-])
-})
 
 
 // scene win_1
@@ -1455,6 +1443,20 @@ addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't c
 function start() {
 	go("win_0")
 }
+
+// scene win_0 - prompt after starting game
+
+scene("win_0", () => {
+    add([
+    pos(500, 250),
+    text("LEVEL 1.\n \nInvaders count: 24.\n\nTime: 30 seconds.\n\nEliminate invaders.\n\nPress any key to continue!", {
+        size: 48,
+        width: 1400, 
+        font: "sink", //  "apl386", "apl386o", "sink", "sinko"
+    }),
+    onClick(() => go("game_1"))
+])
+})
 
 go("main_menu")
 
