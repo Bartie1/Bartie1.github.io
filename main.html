@@ -39,6 +39,7 @@ loadSprite("invader", "sprites/invader.png")
 loadSprite("star", "sprites/flame.png")
 loadSprite("ghost", "sprites/ghost.png")
 loadSound("main", "sounds/main_theme.mp3")
+loadSound("main2", "sounds/main_theme2.mp3")
 loadSound("shoot", "sounds/shoot.mp3")
 loadSound("explosion", "sounds/explosion.mp3")
 loadSound("pow", "sounds/poow.mp3")
@@ -47,7 +48,7 @@ layer(["obj","ui"], "obj")
 
 // set global volume
 
-const music = play("main", {
+const music = play("main2", {
     loop: true
     })
 
