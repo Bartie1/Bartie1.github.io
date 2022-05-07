@@ -452,7 +452,7 @@ const invaders = [powerful_invader, powerful_invader2]
 spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // spawn invaders function that adds AI/bullets/mechanics
 })
  
-
+//
 // -------------------------------------------------- Game Level 3  ------------------------------------------------------------------------       
 
 scene("game_3", () => {
