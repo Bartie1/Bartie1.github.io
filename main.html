@@ -169,13 +169,16 @@ function addLevelWrapper(map_) {
     )
 }
 
-// invaders
+// defining small invaders behaviour
 
 let invader_speed = 300
 const LEVEL_DOWN = 500
 
+
+function invadersMove(){
+
 action("space_invader", (s) => {
-s.move(invader_speed, 0)
+    s.move(invader_speed, 0)
 })
 
 // invaders colide with walls
@@ -187,13 +190,13 @@ collides("space_invader", "right_wall", () => {
     })
 })
 
-
 collides("space_invader", "left_wall", () => {
     invader_speed = 300
     every("space_invader", (s) => {
-    s.move(0, LEVEL_DOWN)
+        s.move(0, LEVEL_DOWN)
+    })
 })
-})
+}
 
 // spawn Particles
 
@@ -319,9 +322,9 @@ bullet_player(player.pos.add(30,-5)),
 play("shoot")
 })
 
-// invaders move speed
+// 
 
-
+invadersMove()
 
 
 // invaders collide with player
