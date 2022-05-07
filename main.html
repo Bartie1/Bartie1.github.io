@@ -437,29 +437,7 @@ defineControls(player)
 
 // spawning bullets player
 
-function bullet_player(p) {
-add([
-area(),
-rect(6,18),
-pos(p),
-origin("center"),
-color(0, 255, 255),
-"bullet_player"
-])
-}
-
-action("bullet_player", (b_p) => {
-b_p.move(0, -BULLET_PLAYER_SPEED)
-if (b_p.pos.y < 0){
-destroy(b_p)
-}
-})
-
-
-keyPress("space", () => {
-bullet_player(player.pos.add(30,-5))
-play("shoot")
-})
+spawn_player_bullets_on_hitting_space(player)
 
 // trigger movement
 
@@ -695,29 +673,7 @@ defineControls(player)
 
 // spawning bullets player
 
-function bullet_player(p) {
-add([
-area(),
-rect(6,18),
-pos(p),
-origin("center"),
-color(0, 255, 255),
-"bullet_player"
-])
-}
-
-action("bullet_player", (b_p) => {
-b_p.move(0, -BULLET_PLAYER_SPEED)
-if (b_p.pos.y < 0){
-destroy(b_p)
-}
-})
-
-
-keyPress("space", () => {
-bullet_player(player.pos.add(30,-5))
-play("shoot")
-})
+spawn_player_bullets_on_hitting_space(player)
 
 // trigger movement
 
@@ -965,30 +921,7 @@ defineControls(player)
 
 // spawning bullets player
 
-
-function bullet_player(p) {
-add([
-area(),
-rect(6,18),
-pos(p),
-origin("center"),
-color(0, 255, 255),
-"bullet_player"
-])
-}
-
-action("bullet_player", (b_p) => {
-b_p.move(0, -BULLET_PLAYER_SPEED)
-if (b_p.pos.y < 0){
-destroy(b_p)
-}
-})
-
-
-keyPress("space", () => {
-bullet_player(player.pos.add(30,-5))
-play("shoot")
-})
+spawn_player_bullets_on_hitting_space(player)
 
 // trigger movement
 
@@ -1246,29 +1179,7 @@ defineControls(player)
 
 // spawning bullets player
 
-function bullet_player(p) {
-add([
-area(),
-rect(6,18),
-pos(p),
-origin("center"),
-color(0, 255, 255),
-"bullet_player"
-])
-}
-
-action("bullet_player", (b_p) => {
-b_p.move(0, -BULLET_PLAYER_SPEED)
-if (b_p.pos.y < 0){
-destroy(b_p)
-}
-})
-
-
-keyPress("space", () => {
-bullet_player(player.pos.add(30,-5))
-play("shoot")
-})
+spawn_player_bullets_on_hitting_space(player)
 
 // invaders move speed
 
