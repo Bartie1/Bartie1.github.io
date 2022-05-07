@@ -305,14 +305,14 @@ function spanwnPowerfulInvaders(target_invaders, target_player, target_score, ta
 
     target_invaders.forEach(powerful_invader =>{
         powerful_invader.onCollide("right_wall", (rightwall) => {
-            ENEMY_SPEED = -400
+            target_powerful_invaders_speed = -400
             powerful_invader.move(0, LEVEL_DOWN)
             })
         })
         
     target_invaders.forEach(powerful_invader =>{
         powerful_invader.onCollide("left_wall", (leftwall) => {
-            ENEMY_SPEED = 400
+            target_powerful_invaders_speed = 400
             powerful_invader.move(0, LEVEL_DOWN)
             })
         })
