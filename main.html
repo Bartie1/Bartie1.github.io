@@ -169,6 +169,32 @@ function addLevelWrapper(map_) {
     )
 }
 
+// invaders
+
+let invader_speed = 300
+const LEVEL_DOWN = 500
+
+action("space_invader", (s) => {
+s.move(invader_speed, 0)
+})
+
+// invaders colide with walls
+
+collides("space_invader", "right_wall", () => {
+    invader_speed = -300
+    every("space_invader", (s) => {
+        s.move(0, LEVEL_DOWN)
+    })
+})
+
+
+collides("space_invader", "left_wall", () => {
+    invader_speed = 300
+    every("space_invader", (s) => {
+    s.move(0, LEVEL_DOWN)
+})
+})
+
 // spawn Particles
 
 function spawnParticles(target) {
@@ -283,7 +309,6 @@ add([
 action("bullet_player", (b_p) => {
 b_p.move(0, -BULLET_PLAYER_SPEED)
 if (b_p.pos.y < 0){
-    console.log('dziala')
     destroy(b_p)
 }
 })
@@ -296,29 +321,7 @@ play("shoot")
 
 // invaders move speed
 
-let invader_speed = 300
-const LEVEL_DOWN = 500
 
-action("space_invader", (invader) => {
-invader.move(invader_speed, 0)
-})
-
-// invaders colide with walls
-
-collides("space_invader", "right_wall", () => {
-    invader_speed = -300
-    every("space_invader", (s) => {
-        s.move(0, LEVEL_DOWN)
-    })
-})
-
-
-collides("space_invader", "left_wall", () => {
-    invader_speed = 300
-    every("space_invader", (s) => {
-    s.move(0, LEVEL_DOWN)
-})
-})
 
 
 // invaders collide with player
