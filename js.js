@@ -1,9 +1,4 @@
-// import kaboom lib
-
-//import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
-
 // load kaboom    
-//
 
 kaboom({
   background: [0, 0, 0],
@@ -221,6 +216,20 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
 
 //---------------------------------
 
+function invaderWrap(target_starting_postions){
+   const invaderWrap = add ([
+        pos(target_starting_postions),
+        sprite("invader"),
+        scale(0.5),
+        state("idle", ["idle", "attack", "move"]),
+        area(),
+        "powerful_invader"
+    ])   
+    return invaderWrap
+}
+
+// -----------
+
 function spanwnPowerfulInvaders(target_invaders, target_player, target_score, target_powerful_invaders_settings) {
     
 
@@ -433,29 +442,13 @@ const powerful_invaders_settings = {
     "bullet_size": (20, 20)
 }
 
-const powerful_invader = add ([
-        pos(100, 100),
-        sprite("invader"),
-        scale(0.5),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader"
-    ])
+let starting_postion_1 = (100, 100)
+let starting_position_2 = (300, 100)
 
-
-    const powerful_invader2 = add ([
-        pos(300, 100),
-        sprite("invader"),
-        scale(0.5),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader2"
-    ])
- 
+let powerful_invader = invaderWrap(starting_postion_1);
+let powerful_invader2 = invaderWrap(starting_position_2);
 
 const invaders = [powerful_invader, powerful_invader2]
-
-
 spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings)
 
 })
