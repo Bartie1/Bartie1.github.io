@@ -223,6 +223,8 @@ function spawnParticles(target) {
 }
 
 
+// spawn player's bullets on all levels
+
 function spawn_player_bullets_on_hitting_space() {
 
     function bullet_player(p) {
@@ -242,7 +244,6 @@ if (b_p.pos.y < 0){
     destroy(b_p)
 }
 })
-
 
 keyPress("space", () => {
 bullet_player(player.pos.add(30,-5)),
