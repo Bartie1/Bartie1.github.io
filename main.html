@@ -225,7 +225,7 @@ function spawnParticles(target) {
 
 // spawn player's bullets on all levels
 
-function spawn_player_bullets_on_hitting_space() {
+function spawn_player_bullets_on_hitting_space(target) {
 
     function bullet_player(p) {
 add([
@@ -246,14 +246,11 @@ if (b_p.pos.y < 0){
 })
 
 keyPress("space", () => {
-bullet_player(player.pos.add(30,-5)),
+bullet_player(target.pos.add(30,-5)),
 play("shoot")
 })
 
 }
-
-
-
 
 
 
@@ -328,7 +325,7 @@ defineControls(player)
 
 // spawning bullets player
 
-spawn_player_bullets_on_hitting_space()
+spawn_player_bullets_on_hitting_space(player)
 
 // trigger movement
 
