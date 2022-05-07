@@ -265,7 +265,8 @@ function player_dies_if_collides_with_invaders(target_repeat_level, target, targ
 
 // space invader collides with player's bullets + scoreupdate
 
-function player_bullets_collide_with_invaders(target_next_level, target_score){
+function player_bullets_collide_with_invaders(target_next_level, target_score, target_score_required){
+
 
     collides("bullet_player", "space_invader", (b,s) => {
         destroy(b)
@@ -274,7 +275,7 @@ function player_bullets_collide_with_invaders(target_next_level, target_score){
         target_score.value++
         target_score.text = target_score.value
         play("explosion")
-        if (target_score.value == 24) {
+        if (target_score.value == target_score_required) {
             go(target_next_level)
         }    
     })
@@ -347,6 +348,7 @@ const gameLevel = addLevelWrapper(map1)
 const player = spawnPlayer()
 let repeat_level = "lose"
 let next_level = "win_1"
+let score_required_for_next_lvl = 24
 
 // Particle spawning
 
@@ -384,7 +386,7 @@ player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 // invader collides with player bullets
 
-player_bullets_collide_with_invaders(next_level, score)
+player_bullets_collide_with_invaders(next_level, score, core_required_for_next_lvl)
 
 
 // timer display
@@ -437,6 +439,7 @@ const gameLevel = addLevelWrapper(map2)
 const player = spawnPlayer()
 let repeat_level = "win_1"
 let next_level = "win_2"
+let score_required_for_next_lvl = 38
 
 // Particle spawning
 
@@ -479,7 +482,7 @@ player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 // invader collides with player bullets
 
-player_bullets_collide_with_invaders(next_level, score)
+player_bullets_collide_with_invaders(next_level, score, core_required_for_next_lvl)
 
 // timer display
 
