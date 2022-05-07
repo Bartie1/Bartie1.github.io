@@ -216,11 +216,11 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
 
 //---------------------------------
 
-function invaderWrap(target_starting_postions){
+function invaderWrap(target_starting_postions, target_powerful_invader_scale){
    const invaderWrap = add ([
         pos(target_starting_postions),
         sprite("invader"),
-        scale(0.5),
+        scale(target_powerful_invader_scale),
         state("idle", ["idle", "attack", "move"]),
         area(),
         "powerful_invader"
@@ -438,14 +438,16 @@ const powerful_invaders_settings = {
     "speed": 400,
     "bullet_speed": 800,
     "bullet_color": "red",
-    "bullet_size": (20, 20)
+    "bullet_size": (20, 20),
+    
 }
 
 let powerful_invader_starting_postion_1 = (100, 100) // powerful invader 1, starting position
 let powerful_invader_starting_position_2 = (600, 100) // powerful invader 2, starting position
+let powerful_invader_scale = (0.9)
 
-let powerful_invader = invaderWrap(powerful_invader_starting_postion_1) // wrap starting positions with the rest of args
-let powerful_invader2 = invaderWrap(powerful_invader_starting_position_2) // wrap starting positions with the rest of args
+let powerful_invader = invaderWrap(powerful_invader_starting_postion_1, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader2 = invaderWrap(powerful_invader_starting_position_2, powerful_invader_scale) // wrap starting positions with the rest of args
 
 const invaders = [powerful_invader, powerful_invader2]
 spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // spawn invaders function that adds AI/bullets/mechanics
