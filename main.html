@@ -258,7 +258,7 @@ play("shoot")
 function player_dies_if_collides_with_invaders(target_repeat_level, target, target_score) {
 
     target.onCollide("space_invader", () => {
-        go(target_repeat_level, {target_score: score.value})
+        go(target_repeat_level, {target_score: target_score.value})
     })
 
 }
@@ -272,9 +272,9 @@ function player_bullets_collide_with_invaders(target_next_level, target_score){
         destroy(s)
         addKaboom(b.pos)
         target_score.value++
-        target_score.text = score.value
+        target_score.text = target_score.value
         play("explosion")
-        if (score.value == 24) {
+        if (target_score.value == 24) {
             go(target_next_level)
         }    
     })
