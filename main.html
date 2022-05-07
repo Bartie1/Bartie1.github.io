@@ -229,6 +229,18 @@ function player_bullets_collide_with_invaders(target_next_level, target_score, t
     })
 }
 
+// player dies from bullet
+
+function player_dies_from_bullets(target, target_score) {
+
+    player.onCollide("bullet", (bullet) => {
+        destroy(bullet)
+        destroy(target)
+        addKaboom(bullet.pos)
+        go(repeat_level, { target_score: target_score.value})
+    })
+}
+
 function spawnScore() {
 
     const score = add([
@@ -397,6 +409,10 @@ invadersMove(300)
 // score display
 
 const score = spawnScore()
+
+// player dies from bullets
+
+player_dies_from_bullets(player, score)
 
 // invaders collide with player
 
