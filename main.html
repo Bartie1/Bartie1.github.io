@@ -1028,8 +1028,6 @@ invaders.forEach(powerful_invader =>{
 
 scene("win_1", () => {
 
-    music.pause()
-
     add([
     pos(500, 250),
     text("LEVEL 2.\n \nInvaders count: 36.\n\nPOWERFUL INVADERS count: 2\n\nTime: 40 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
@@ -1117,8 +1115,6 @@ text("Congratulations on beating my game!", {
         font: "sink", 
     }),
 
-music.pause(),
-
 onClick(() => go("main_menu"))
 
 ])
@@ -1129,8 +1125,6 @@ onClick(() => go("main_menu"))
 // -------------------------------------------------- Main menu  ------------------------------------------------------------------------                                           
 
 scene("main_menu", () => {
-
-music.pause()
 
 //spooky ghost and text
 
