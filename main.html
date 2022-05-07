@@ -175,26 +175,26 @@ const LEVEL_DOWN = 500
 
 
 function invadersMove(speed){
-
-action("space_invader", (s) => {
-    s.move(speed, 0)
-})
-
-// invaders colide with walls
-
-collides("space_invader", "right_wall", () => {
-    speed *= -1
-    every("space_invader", (s) => {
-        s.move(0, LEVEL_DOWN)
+    let ispeed = speed;
+    action("space_invader", (s) => {
+        s.move(speed, 0)
     })
-})
 
-collides("space_invader", "left_wall", () => {
-    speed *= -1
-    every("space_invader", (s) => {
-        s.move(0, LEVEL_DOWN)
+    // invaders colide with walls
+
+    collides("space_invader", "right_wall", () => {
+        ispeed = -speed
+        every("space_invader", (s) => {
+            s.move(0, LEVEL_DOWN)
+        })
     })
-})
+
+    collides("space_invader", "left_wall", () => {
+        ispeed = speed
+        every("space_invader", (s) => {
+            s.move(0, LEVEL_DOWN)
+        })
+    })
 }
 
 // spawn Particles
