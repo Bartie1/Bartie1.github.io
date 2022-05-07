@@ -266,17 +266,6 @@ defineControls(player)
         go("lose", { score: score.value})
     })
 
-// player falls down 
-
-// function fallDown(player){
-//     if (player.pos.y > 1100){
-//         go("lose")
-//     }
-// }
-
-// while (true) {
-//     fallDown(player)
-// } 
 
 // spawning bullets player
 
@@ -294,6 +283,7 @@ add([
 action("bullet_player", (b_p) => {
 b_p.move(0, -BULLET_PLAYER_SPEED)
 if (b_p.pos.y < 0){
+    console.log('dziala')
     destroy(b_p)
 }
 })
