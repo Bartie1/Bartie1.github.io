@@ -53,7 +53,7 @@ volume(0.4)
 
 onUpdate(() => cursor("default"))
 
-//---------------------------------- essential stuff that repeats itself
+//---------------------------------- essential stuff that repeats itself across levels
 
 const MOVE_SPEED = 800 // player move speed
 const BULLET_PLAYER_SPEED = 400 // player bullet speed
@@ -373,12 +373,6 @@ let score_required_for_next_lvl = 38
 
 spawnParticles(player)
 
-// player dies from space invader collision
-
-player.onCollide("invader", (invader) => {
-    go(repeat_level, { score: score.value})
-    })
-
 // player dies from bullet
 
 player.onCollide("bullet", (bullet) => {
@@ -587,12 +581,6 @@ let score_required_for_next_lvl = 39
 // Particle spawning
 
 spawnParticles(player)
-    
-// player dies from space invader collision
-
-player.onCollide("invader", (invader) => {
-    go(repeat_level, { score: score.value})
-    })
 
 // player dies from bullet
 
@@ -815,12 +803,6 @@ spawnParticles(player)
 let repeat_level = "win_35"
 let next_level = "win_4"
 let score_required_for_next_lvl = 52
-    
-// player dies from space invader collision
-
-player.onCollide("invader", (invader) => {
-    go(repeat_level, { score: score.value})
-    })
 
 // player dies from bullet
 
@@ -1053,12 +1035,6 @@ let score_required_for_next_lvl = 52
 // Particle spawning
 
 spawnParticles(player)
-    
-// player dies from space invader collision
-
-player.onCollide("invader", (invader) => {
-    go(repeat_level, { score: score.value})
-    })
 
 // player dies from bullet
 
