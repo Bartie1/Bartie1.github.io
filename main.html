@@ -47,6 +47,8 @@ layer(["obj","ui"], "obj")
 
 // set global volume
 
+const music = play("main")
+music.pause()
 volume(0.4)
 
 // reset cursor to default at frame start for easier cursor management
@@ -283,7 +285,7 @@ function spawnTimer(target_repeat_level, target_time_left) {
 
 scene("game_1", () => {
 
-const music = play("main")
+    music.play()
 
 //game area
 
