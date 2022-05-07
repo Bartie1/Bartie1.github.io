@@ -143,10 +143,10 @@ if (target.pos.x > width()) {
 })
 
 onKeyDown("up", () => {
-if (player.pos.y <= 1200) {
+if (target.pos.y <= 1200) {
 target.move(0, -MOVE_SPEED)
 }
-else (player.pos.y > 1200)
+else (target.pos.y > 1200)
 })
 
 onKeyDown("down", () => {
