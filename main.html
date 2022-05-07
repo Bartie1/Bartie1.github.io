@@ -190,7 +190,7 @@ collides("space_invader", "right_wall", () => {
 })
 
 collides("space_invader", "left_wall", () => {
-    //speed = -speed
+    speed = -speed
     every("space_invader", (s) => {
         s.move(0, LEVEL_DOWN)
     })
