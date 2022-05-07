@@ -27,7 +27,7 @@ volume(0.4)
 
 onUpdate(() => cursor("default"))
 
-//--- define functions and constants that repeat themselves across levels
+//-------------------- define functions and constants that repeat themselves across levels ------------------------------------
 
 const MOVE_SPEED = 800 // player move speed
 const BULLET_PLAYER_SPEED = 400 // player bullet speed
@@ -115,7 +115,7 @@ function invadersMove(speed){
     })
 }
 
-// spawn Particles
+// spawn flames particles
 
 function spawnParticles(target) {
     const sprites = ["star"]
@@ -140,7 +140,6 @@ function spawnParticles(target) {
 
     })
 }
-
 
 // spawn player's bullets when space is hit
 
@@ -168,7 +167,6 @@ function spawn_player_bullets_on_hitting_space(target) {
         bullet_player(target.pos.add(30,-5)),
         play("shoot")
     })
-
 }
 
 // die if player colldes with invaders
@@ -209,10 +207,10 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
     })
 }
 
-//---------------------------------
+// powerful invader wrapper
 
 function invaderWrap(target_starting_postions, target_powerful_invader_scale){
-   const invaderWrap = add ([
+   const bonzo = add ([
         pos(target_starting_postions),
         sprite("invader"),
         scale(target_powerful_invader_scale),
@@ -220,14 +218,13 @@ function invaderWrap(target_starting_postions, target_powerful_invader_scale){
         area(),
         "powerful_invader"
     ])   
-    return invaderWrap
+    return bonzo
 }
 
-// -----------
+// powerful invaders AI
 
 function spanwnPowerfulInvaders(target_invaders, target_player, target_score, target_powerful_invaders_settings) {
     
-
     target_invaders.forEach(powerful_invader => {
         powerful_invader.onStateEnter("idle", async () =>{
             await wait(rand(0.1, 1))
@@ -288,7 +285,6 @@ function spanwnPowerfulInvaders(target_invaders, target_player, target_score, ta
             })
         })
 
-
     // powerful_invader collides with walls
 
     target_invaders.forEach(powerful_invader =>{
@@ -304,10 +300,7 @@ function spanwnPowerfulInvaders(target_invaders, target_player, target_score, ta
             powerful_invader.move(0, LEVEL_DOWN)
             })
         })
-    
 }
-
-//-----------------------
 
 // spawn score
 
@@ -348,16 +341,11 @@ function spawnTimer(target_repeat_level, target_time_left) {
     return timer
 }
 
-//
-
-
 // -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
 
 scene("game_1", () => {
 
     const music = play("main2")
-
-//game area
 
 const map1 = [
     "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
@@ -390,13 +378,9 @@ player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders c
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
 })
      
-
 // -------------------------------------------------- Game Level 2  ------------------------------------------------------------------------       
 
 scene("game_2", () => {
-
-
-//game area
 
 const map2 = [
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
@@ -438,9 +422,9 @@ const powerful_invaders_settings = {
     "bullet_size": (20, 20),    
 }
 
-let powerful_invader_starting_postion_1 = (100, 100) // powerful invader 1, starting position
-let powerful_invader_starting_position_2 = (600, 110) // powerful invader 2, starting position
-let powerful_invader_scale = (0.9) // powerful invaders size
+let powerful_invader_starting_postion_1 = [100, 100] // powerful invader 1, starting position
+let powerful_invader_starting_position_2 = [700, 100] // powerful invader 2, starting position
+let powerful_invader_scale = (0.5) // powerful invaders size
 
 let powerful_invader = invaderWrap(powerful_invader_starting_postion_1, powerful_invader_scale) // wrap starting positions with the rest of args
 let powerful_invader2 = invaderWrap(powerful_invader_starting_position_2, powerful_invader_scale) // wrap starting positions with the rest of args
@@ -452,8 +436,6 @@ spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // s
 // -------------------------------------------------- Game Level 3  ------------------------------------------------------------------------       
 
 scene("game_3", () => {
-
-//game area
 
 const map3 = [
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
@@ -485,61 +467,31 @@ player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
 
-
 // --------------- LEVEL 3 ADDING POWEFUL INVADERS -------------
 
-const powerful_invaders_speed = 400
-const powerful_invaders_bullet_speed = 800
+const powerful_invaders_settings = {
+    "speed": 400,
+    "bullet_speed": 800,
+    "bullet_color": "red",
+    "bullet_size": (20, 20),    
+}
 
+let powerful_invader_starting_postion_1 = [100, 100] // powerful invader 1, starting position
+let powerful_invader_starting_position_2 = [400, 100] // powerful invader 2, starting position
+let powerful_invader_starting_position_3 = [700, 100] // powerful invader 2, starting position
+let powerful_invader_scale = (0.5) // powerful invaders size
 
-const powerful_invader = add ([
-        pos(100, 100),
-        sprite("invader"),
-        scale(0.5),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader"
-    ])
-
-
-    const powerful_invader2 = add ([
-        pos(300, 100),
-        sprite("invader"),
-        scale(0.5),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader2"
-    ])
-
-
-    const powerful_invader3 = add ([
-        pos(500, 100),
-        sprite("invader"),
-        scale(0.5),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader3"
-    ])
- 
+let powerful_invader = invaderWrap(powerful_invader_starting_postion_1, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader2 = invaderWrap(powerful_invader_starting_position_2, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader3 = invaderWrap(powerful_invader_starting_position_3, powerful_invader_scale) // wrap starting positions with the rest of args
 
 const invaders = [powerful_invader, powerful_invader2, powerful_invader3]
-
-spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_speed, powerful_invaders_bullet_speed)
-
-
+spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // spawn invaders function that adds AI/bullets/mechanics
 })
-
-// ----------- POWERFUL INVADERS END ------------
-
-// -------------------------------------------------- Game Level 3 end  ------------------------------------------------------------------------       
-
-    
 
 // -------------------------------------------------- Game Level 4  ------------------------------------------------------------------------       
 
 scene("game_4", () => {
-
-//game area
 
 const map4 = [
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
@@ -571,70 +523,33 @@ player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
 
-
 // --------------- LEVEL 4 ADDING POWEFUL INVADERS -------------
 
-const powerful_invaders_speed = 700
-const powerful_invaders_bullet_speed = 1000
+const powerful_invaders_settings = {
+    "speed": 400,
+    "bullet_speed": 800,
+    "bullet_color": "red",
+    "bullet_size": (20, 20),    
+}
 
+let powerful_invader_starting_postion_1 = [100, 100] // powerful invader 1, starting position
+let powerful_invader_starting_position_2 = [300, 100] // powerful invader 2, starting position
+let powerful_invader_starting_position_3 = [500, 100] // powerful invader 2, starting position
+let powerful_invader_starting_position_4 = [700, 100] // powerful invader 2, starting position
+let powerful_invader_scale = (0.5) // powerful invaders size
 
-const powerful_invader = add ([
-        pos(100, 100),
-        sprite("invader"),
-        scale(0.6),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader"
-    ])
-
-
-    const powerful_invader2 = add ([
-        pos(300, 100),
-        sprite("invader"),
-        scale(0.6),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader2"
-    ])
-
-
-    const powerful_invader3 = add ([
-        pos(500, 100),
-        sprite("invader"),
-        scale(0.6),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader3"
-    ])
-
-    const powerful_invader4 = add ([
-        pos(700, 100),
-        sprite("invader"),
-        scale(0.5),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader4"
-    ])
-
-
- 
+let powerful_invader = invaderWrap(powerful_invader_starting_postion_1, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader2 = invaderWrap(powerful_invader_starting_position_2, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader3 = invaderWrap(powerful_invader_starting_position_3, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader4 = invaderWrap(powerful_invader_starting_position_4, powerful_invader_scale) // wrap starting positions with the rest of args
 
 const invaders = [powerful_invader, powerful_invader2, powerful_invader3, powerful_invader4]
-
-spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_speed, powerful_invaders_bullet_speed)
-
+spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // spawn invaders function that adds AI/bullets/mechanics
 })
-
-// ----------- POWERFUL INVADERS END ------------
-
-// -------------------------------------------------- Game Level 4 end  ------------------------------------------------------------------------   
-
 
 // -------------------------------------------------- Game Level 5  ------------------------------------------------------------------------       
 
 scene("game_5", () => {
-
-//game area
 
 const map5 = [
 "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
@@ -668,162 +583,112 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 // --------------- LEVEL 5 ADDING POWEFUL INVADERS -------------
 
-const powerful_invaders_speed = 700
-const powerful_invaders_bullet_speed = 1000
+const powerful_invaders_settings = {
+    "speed": 400,
+    "bullet_speed": 800,
+    "bullet_color": "red",
+    "bullet_size": (20, 20),    
+}
 
+let powerful_invader_starting_postion_1 = [100, 100] // powerful invader 1, starting position
+let powerful_invader_starting_position_2 = [300, 100] // powerful invader 2, starting position
+let powerful_invader_starting_position_3 = [500, 100] // powerful invader 2, starting position
+let powerful_invader_starting_position_4 = [700, 100] // powerful invader 2, starting position
+let powerful_invader_scale = (0.8) // powerful invaders size
 
-const powerful_invader = add ([
-        pos(100, 100),
-        sprite("invader"),
-        scale(0.8),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader"
-    ])
-
-
-    const powerful_invader2 = add ([
-        pos(300, 100),
-        sprite("invader"),
-        scale(0.8),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader2"
-    ])
-
-
-    const powerful_invader3 = add ([
-        pos(500, 100),
-        sprite("invader"),
-        scale(0.8),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader3"
-    ])
-
-    const powerful_invader4 = add ([
-        pos(700, 100),
-        sprite("invader"),
-        scale(0.8),
-        state("idle", ["idle", "attack", "move"]),
-        area(),
-        "powerful_invader4"
-    ])
-
-
- 
+let powerful_invader = invaderWrap(powerful_invader_starting_postion_1, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader2 = invaderWrap(powerful_invader_starting_position_2, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader3 = invaderWrap(powerful_invader_starting_position_3, powerful_invader_scale) // wrap starting positions with the rest of args
+let powerful_invader4 = invaderWrap(powerful_invader_starting_position_4, powerful_invader_scale) // wrap starting positions with the rest of args
 
 const invaders = [powerful_invader, powerful_invader2, powerful_invader3, powerful_invader4]
-
-spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_speed, powerful_invaders_bullet_speed)
-
+spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // spawn invaders function that adds AI/bullets/mechanics
 })
 
-// ----------- POWERFUL INVADERS END ------------
-
-// -------------------------------------------------- Game Level 5 end  ------------------------------------------------------------------------   
-
-
 // -------------------------------------------------- S-C-E-N-E-S ------------------------------------------------------------------------   
-
-
-
-
 
 // scene win_1
 
 scene("win_1", () => {
-
     add([
-    pos(500, 250),
-    text("LEVEL 2.\n \nInvaders count: 36.\n\nPOWERFUL INVADERS count: 2\n\nTime: 40 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
-        size: 48, 
-        width: 1400, 
-        font: "sink", 
-    }),
+        pos(500, 250),
+        text("LEVEL 2.\n \nInvaders count: 36.\n\nPOWERFUL INVADERS count: 2\n\nTime: 40 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
+            size: 48, 
+            width: 1400, 
+            font: "sink", 
+        }),
     onClick(() => go("game_2"))
-])
+    ])
 })
-
 
 // scene win_2
 
 scene("win_2", () => {
     add([
-    pos(500, 250),
-text("LEVEL 3.\n \nInvaders count: 36.\n\n POWERFUL INVADERS count: 3\n\nTime: 50 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
-        size: 48, 
-        width: 1400, 
-        font: "sink", 
-    }),
-    onClick(() => go("game_3"))
-])
+        pos(500, 250),
+        text("LEVEL 3.\n \nInvaders count: 36.\n\n POWERFUL INVADERS count: 3\n\nTime: 50 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
+            size: 48, 
+            width: 1400, 
+            font: "sink", 
+        }),
+        onClick(() => go("game_3"))
+    ])
 })
 
 // scene win_3
 
 scene("win_3", () => {
     add([
-    pos(500, 250),
-text("You win!\n\n Password to move to the next puzzle is is: PASSWORD1\n\n Or mouse click to  carry on playing\n\n There are 2 levels left!", {
-        size: 48, 
-        width: 1400, 
-        font: "sink", 
+        pos(500, 250),
+        text("You win!\n\n Password to move to the next puzzle is is: PASSWORD1\n\n Or mouse click to  carry on playing\n\n There are 2 levels left!", {
+            size: 48, 
+            width: 1400, 
+            font: "sink", 
     }),
-
-onClick(() => go("win_35"))
-
-])
+        onClick(() => go("win_35"))
+    ])
 })
 
 // scene win_3.5
 
 scene("win_35", () => {
     add([
-    pos(500, 250),
-text("LEVEL 4.\n\nInvaders count: 48.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nPOWERFUL INVADERS ARE UPGRADED.\n\nMouse click to continue!", {
-        size: 48, 
-        width: 1400, 
-        font: "sink", 
+        pos(500, 250),
+        text("LEVEL 4.\n\nInvaders count: 48.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nPOWERFUL INVADERS ARE UPGRADED.\n\nMouse click to continue!", {
+            size: 48, 
+            width: 1400, 
+            font: "sink", 
     }),
-
-onClick(() => go("game_4"))
-
-])
+    onClick(() => go("game_4"))
+    ])
 })
 
 // scene win_4
 
 scene("win_4", () => {
     add([
-    pos(500, 250),
-text("LEVEL 5. FINAL LEVEL \n\nInvaders count: 46.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nALL INVADERS ARE UPGRADED.\n\nMouse click to continue!", {
-        size: 48, 
-        width: 1400, 
-        font: "sink", 
+        pos(500, 250),
+        text("LEVEL 5. FINAL LEVEL \n\nInvaders count: 46.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nALL INVADERS ARE UPGRADED.\n\nMouse click to continue!", {
+            size: 48, 
+            width: 1400, 
+            font: "sink", 
     }),
-
-onClick(() => go("game_5"))
-
-
-
-])
+    onClick(() => go("game_5"))
+    ])
 })
 
 // scene win_5
 
 scene("win_5", () => {
     add([
-    pos(500, 250),
-text("Congratulations on beating my game!", {
-        size: 48, 
-        width: 1400, 
-        font: "sink", 
-    }),
-
-onClick(() => go("main_menu"))
-
-])
+        pos(500, 250),
+        text("Congratulations on beating my game!", {
+            size: 48, 
+            width: 1400, 
+            font: "sink", 
+        }),
+    onClick(() => go("main_menu"))
+    ])
 })
 
 // start program with main menu scene
@@ -834,56 +699,53 @@ scene("main_menu", () => {
 
 //spooky ghost and text
 
-const ghost = add([
-    sprite("ghost"),
-    scale (0.7),
-    pos(1200,600),
+    const ghost = add([
+        sprite("ghost"),
+        scale (0.7),
+        pos(1200,600),
     ])
 
 
-add([
-pos(700, 300),
-text("LIBRARY GHOST DEMANS YOU PLAY THE GAME TO MOVE FORWARD!\n\n\n 'Use arrow keys to move around, space to shoot!'", {
-    size: 38,
-    width: 800, 
-    font: "sink", 
-}
-)])
+    add([
+        pos(700, 300),
+        text("LIBRARY GHOST DEMANS YOU PLAY THE GAME TO MOVE FORWARD!\n\n\n 'Use arrow keys to move around, space to shoot!'", {
+        size: 38,
+        width: 800, 
+        font: "sink", 
+        })
+    ])
 
-//add button function
+    //add button function
 
-function addButton(txt, p, f) {
+    function addButton(txt, p, f) {
 
-const btn = add([
-    text(txt, {
-        size: 96,
-        font: "sink"}),
-        color (0,255,0),
-    pos(p),
-    area({ cursor: "pointer", }),
-    scale(1),
-    origin("center"),
-    
-])
+    const btn = add([
+        text(txt, {
+            size: 96,
+            font: "sink"}),
+            color (0,255,0),
+        pos(p),
+        area({ cursor: "pointer", }),
+        scale(1),
+        origin("center"),  
+    ])
+        btn.onClick(f)
+    }
 
-btn.onClick(f)
-}
+    // menu buttons
 
-// menu buttons
-
-addButton("Start", vec2(300, 300), () => start() )
-addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
+    addButton("Start", vec2(300, 300), () => start() )
+    addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
 
 })
 
 // -------------------------------------------------- Main menu end  ------------------------------------------------------------------------ 
 
+// scene win_0 - prompt after starting game
 
 function start() {
 	go("win_0")
 }
-
-// scene win_0 - prompt after starting game
 
 scene("win_0", () => {
     add([
@@ -894,7 +756,9 @@ scene("win_0", () => {
         font: "sink", //  "apl386", "apl386o", "sink", "sinko"
     }),
     onClick(() => go("game_1"))
-])
+    ])
 })
+
+// start program    
 
 go("main_menu")
