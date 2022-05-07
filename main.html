@@ -94,6 +94,10 @@ function addButton(txt, p, f) {
 
 // menu buttons
 
+function start() {
+	go("win_0")
+}
+
 addButton("Start", vec2(300, 300), () => start())
 addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
 
@@ -1310,7 +1314,7 @@ invaders.forEach(powerful_invader =>{
 
 // ----------- POWERFUL INVADERS END ------------
 
-// -------------------------------------------------- Game Level 4 end  ------------------------------------------------------------------------   
+// -------------------------------------------------- Game Level 5 end  ------------------------------------------------------------------------   
 
 
 // -------------------------------------------------- S-C-E-N-E-S ------------------------------------------------------------------------   
@@ -1329,10 +1333,6 @@ scene("win_0", () => {
     onClick(() => go("game_1"))
 ])
 })
-
-function start() {
-	go("win_0")
-}
 
 
 // scene win_1
