@@ -49,61 +49,6 @@ layer(["obj","ui"], "obj")
 
 volume(0.4)
 
-// -------------------------------------------------- Main menu  ------------------------------------------------------------------------                                           
-
-scene("main_menu", () => {
-
-    //spooky ghost and text
-
-    const ghost = add([
-        sprite("ghost"),
-        scale (0.7),
-        pos(1200,600),
-        ])
-
-
-    add([
-    pos(700, 300),
-    text("LIBRARY GHOST DEMANS YOU PLAY THE GAME TO MOVE FORWARD!\n\n\n 'Use arrow keys to move around, space to shoot!'", {
-        size: 38,
-        width: 800, 
-        font: "sink", 
-    }
-    )])
-
-    //add button function
-
-function addButton(txt, p, f) {
-
-	const btn = add([
-		text(txt, {
-            size: 96,
-            font: "sink"}),
-            color (0,255,0),
-		pos(p),
-		area({ cursor: "pointer", }),
-		scale(1),
-		origin("center"),
-        
-	])
-
-	btn.onClick(f)
-    
-
-}
-
-// menu functions
-
-
-
-// menu buttons
-
-addButton("Start", vec2(300, 300), () => go("win_0"))
-addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
-
-})
-
-// -------------------------------------------------- Main menu end  ------------------------------------------------------------------------ 
 
 // reset cursor to default at frame start for easier cursor management
 
@@ -1456,6 +1401,67 @@ onClick(() => go("main_menu"))
 
 
 // start program with main menu scene
+
+// -------------------------------------------------- Main menu  ------------------------------------------------------------------------                                           
+
+scene("main_menu", () => {
+
+//spooky ghost and text
+
+const ghost = add([
+    sprite("ghost"),
+    scale (0.7),
+    pos(1200,600),
+    ])
+
+
+add([
+pos(700, 300),
+text("LIBRARY GHOST DEMANS YOU PLAY THE GAME TO MOVE FORWARD!\n\n\n 'Use arrow keys to move around, space to shoot!'", {
+    size: 38,
+    width: 800, 
+    font: "sink", 
+}
+)])
+
+//add button function
+
+function addButton(txt, p, f) {
+
+const btn = add([
+    text(txt, {
+        size: 96,
+        font: "sink"}),
+        color (0,255,0),
+    pos(p),
+    area({ cursor: "pointer", }),
+    scale(1),
+    origin("center"),
+    
+])
+
+btn.onClick(f)
+
+
+}
+
+// menu functions
+
+// function start() {
+// 	go("win_0")
+// }
+
+
+
+// menu buttons
+
+addButton("Start", vec2(300, 300), () => go("win_0"))
+addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
+
+})
+
+// -------------------------------------------------- Main menu end  ------------------------------------------------------------------------ 
+
 
 go("main_menu")
 
