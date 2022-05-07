@@ -296,28 +296,30 @@ play("shoot")
 
 // invaders move speed
 
-let INVADER_SPEED = 300
+let invader_speed = 300
 const LEVEL_DOWN = 500
 
 action("space_invader", (invader) => {
-invader.move(INVADER_SPEED, 0)
+invader.move(invader_speed, 0)
 })
 
 // invaders colide with walls
 
 collides("space_invader", "right_wall", () => {
-INVADER_SPEED = -300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
+    invader_speed = -300
+    every("space_invader", (s) => {
+        s.move(0, LEVEL_DOWN)
+    })
 })
 
+
 collides("space_invader", "left_wall", () => {
-INVADER_SPEED = 300
-every("space_invader", (s) => {
-s.move(0, LEVEL_DOWN)
+    invader_speed = 300
+    every("space_invader", (s) => {
+    s.move(0, LEVEL_DOWN)
 })
 })
-})
+
 
 // invaders collide with player
 
@@ -461,23 +463,23 @@ play("shoot")
 
 // invaders move speed
 
-let INVADER_SPEED = 300
+let invader_speed = 300
 const LEVEL_DOWN = 500
 
 action("space_invader", (invader) => {
-invader.move(INVADER_SPEED, 0)
+invader.move(invader_speed, 0)
 })
 
 // invaders colide with walls
 
 collides("space_invader", "right_wall", () => {
-INVADER_SPEED = -300
+invader_speed = -300
 every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
 
 collides("space_invader", "left_wall", () => {
-INVADER_SPEED = 300
+invader_speed = 300
 every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
@@ -740,23 +742,23 @@ play("shoot")
 
 // invaders move speed
 
-let INVADER_SPEED = 300
+let invader_speed = 300
 const LEVEL_DOWN = 500
 
 action("space_invader", (invader) => {
-invader.move(INVADER_SPEED, 0)
+invader.move(invader_speed, 0)
 })
 
 // invaders colide with walls
 
 collides("space_invader", "right_wall", () => {
-INVADER_SPEED = -300
+invader_speed = -300
 every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
 
 collides("space_invader", "left_wall", () => {
-INVADER_SPEED = 300
+invader_speed = 300
 every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
@@ -1032,23 +1034,23 @@ play("shoot")
 
 // invaders move speed
 
-let INVADER_SPEED = 300
+let invader_speed = 300
 const LEVEL_DOWN = 500
 
 action("space_invader", (invader) => {
-invader.move(INVADER_SPEED, 0)
+invader.move(invader_speed, 0)
 })
 
 // invaders colide with walls
 
 collides("space_invader", "right_wall", () => {
-INVADER_SPEED = -300
+invader_speed = -300
 every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
 
 collides("space_invader", "left_wall", () => {
-INVADER_SPEED = 300
+invader_speed = 300
 every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
@@ -1333,23 +1335,23 @@ play("shoot")
 
 // invaders move speed
 
-let INVADER_SPEED = 700
+let invader_speed = 700
 const LEVEL_DOWN = 500
 
 action("space_invader", (invader) => {
-invader.move(INVADER_SPEED, 0)
+invader.move(invader_speed, 0)
 })
 
 // invaders colide with walls
 
 collides("space_invader", "right_wall", () => {
-INVADER_SPEED = -300
+invader_speed = -300
 every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
 
 collides("space_invader", "left_wall", () => {
-INVADER_SPEED = 300
+invader_speed = 300
 every("space_invader", (s) => {
 s.move(0, LEVEL_DOWN)
 })
