@@ -49,7 +49,6 @@ layer(["obj","ui"], "obj")
 
 volume(0.4)
 
-
 // reset cursor to default at frame start for easier cursor management
 
 onUpdate(() => cursor("default"))
@@ -57,7 +56,7 @@ onUpdate(() => cursor("default"))
 //---------------------------------- essential stuff that repeats itself
 
 const MOVE_SPEED = 800 // player move speed
-const BULLET_PLAYER_SPEED = 400
+const BULLET_PLAYER_SPEED = 400 // player bullet speed
 
 
 // spawn player function
@@ -1455,7 +1454,7 @@ btn.onClick(f)
 
 // menu buttons
 
-addButton("Start", vec2(300, 300), () => go("win_0"))
+addButton("Start", vec2(300, 300), go("win_0"))
 addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
 
 })
