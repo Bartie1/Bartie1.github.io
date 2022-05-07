@@ -1,6 +1,6 @@
 // import kaboom lib
 
-import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
+//import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs";
 
 // load kaboom    
 
