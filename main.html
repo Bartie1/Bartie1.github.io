@@ -177,7 +177,7 @@ const LEVEL_DOWN = 500
 function invadersMove(speed){
     let ispeed = speed;
     action("space_invader", (s) => {
-        s.move(speed, 0)
+        s.move(ispeed, 0)
     })
 
     // invaders colide with walls
