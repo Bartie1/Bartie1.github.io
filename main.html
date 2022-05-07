@@ -287,7 +287,8 @@ const gameLevel = addLevelWrapper(map1)
 
 // player & controls
 
-const player = spawnPlayer()
+const player = spawnPlayer() // spawn player
+const score = spawnScore() // score display
 let repeat_level = "lose"
 let next_level = "win_1"
 let score_required_for_next_lvl = 24
@@ -300,10 +301,6 @@ spawnParticles(player)
 
 defineControls(player)
 
-// player dies from bullet
-
-player_dies_from_bullets(repeat_level, player, score)
-
 // spawning bullets player
 
 spawn_player_bullets_on_hitting_space(player)
@@ -312,9 +309,9 @@ spawn_player_bullets_on_hitting_space(player)
 
 invadersMove(300)
 
-// score display
+// player dies from bullet
 
-const score = spawnScore()
+player_dies_from_bullets(repeat_level, player, score)
 
 // invaders collide with player
 
@@ -392,10 +389,6 @@ spawn_player_bullets_on_hitting_space(player)
 // trigger movement
 
 invadersMove(300)
-
-// score display
-
-const score = spawnScore()
 
 // player dies from bullets
 
@@ -576,7 +569,8 @@ const gameLevel = addLevelWrapper(map3)
 
 // player & controls
 
-const player = spawnPlayer()
+const player = spawnPlayer() // spawn player
+const score = spawnScore() // score display
 let repeat_level = "win_2"
 let next_level = "win_3"
 let score_required_for_next_lvl = 39
@@ -600,10 +594,6 @@ spawn_player_bullets_on_hitting_space(player)
 // trigger movement
 
 invadersMove(300)
-
-// score display
-
-const score = spawnScore()
 
 // invaders collide with player
 
@@ -793,7 +783,8 @@ const gameLevel = addLevelWrapper(map4)
 
 // player & controls
 
-const player = spawnPlayer()
+const player = spawnPlayer() // spawn player
+const score = spawnScore() // score display
 
 // Particle spawning
 
@@ -817,10 +808,6 @@ spawn_player_bullets_on_hitting_space(player)
 // trigger movement
 
 invadersMove(300)
-
-// score display
-
-const score = spawnScore()
 
 // invaders collide with player
 
@@ -1020,7 +1007,8 @@ const gameLevel = addLevelWrapper(map5)
 
 // player & controls
 
-const player = spawnPlayer()
+const player = spawnPlayer() // spawn player
+const score = spawnScore() // score display
 let repeat_level = "win_4"
 let next_level = "win_5"
 let score_required_for_next_lvl = 52
@@ -1044,10 +1032,6 @@ spawn_player_bullets_on_hitting_space(player)
 // invaders move speed & trigger movements
 
 invadersMove(700)
-
-// score display
-
-const score = spawnScore()
 
 // invaders collide with player
 
