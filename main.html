@@ -183,14 +183,14 @@ action("space_invader", (s) => {
 // invaders colide with walls
 
 collides("space_invader", "right_wall", () => {
-    speed = -speed
+    speed *= -1
     every("space_invader", (s) => {
         s.move(0, LEVEL_DOWN)
     })
 })
 
 collides("space_invader", "left_wall", () => {
-    speed = -speed
+    speed *= -1
     every("space_invader", (s) => {
         s.move(0, LEVEL_DOWN)
     })
