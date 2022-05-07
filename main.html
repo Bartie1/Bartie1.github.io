@@ -255,14 +255,29 @@ play("shoot")
 
 // die if player colldes with invaders
 
-function player_dies_if_collides_with_invaders(target_level) {
+function player_dies_if_collides_with_invaders(target_repeat_level) {
 
     player.onCollide("space_invader", () => {
-        go(target_level, {score: score.value})
+        go(target_repeat_level, {score: score.value})
     })
 
 }
 
+// space invader collides with player's bullets + scoreupdate
+
+function player_bullets_collide_with_invaders(target_next_level)
+
+collides("bullet_player", "space_invader", (b,s) => {
+    destroy(b)
+    destroy(s)
+    addKaboom(b.pos)
+    score.value++
+    score.text = score.value
+    play("explosion")
+    if (score.value == 24) {
+        go(target_next_level)
+    }
+})
 
 //----------------------------------------------------------------------------------
 
@@ -349,17 +364,7 @@ player_dies_if_collides_with_invaders(repeat_level)
 
 // invader collides with player bullets
 
-    collides("bullet_player", "space_invader", (b,s) => {
-    destroy(b)
-    destroy(s)
-    addKaboom(b.pos)
-    score.value++
-    score.text = score.value
-    play("explosion")
-    if (score.value == 24) {
-        go(next_level)
-    }
-})
+player_bullets_collide_with_invaders(next_level)
 
 // score display
 
