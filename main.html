@@ -143,22 +143,14 @@ if (target.pos.x > width()) {
 })
 
 onKeyDown("up", () => {
-    if (target.pos.y <= 1060) {
+    if (target.pos.y <= Math.floor(window.innerHeight)) {
         target.move(0, -MOVE_SPEED)
-    } 
-    else if (target.pos.y > 1040) {
-        go("lose")
-    }
+    }  
 }
 )
 
 onKeyDown("down", () => {
-    if (target.pos.y <= 1060) {
-        target.move(0, MOVE_SPEED)
-    } 
-    else if (target.pos.y > 1040) {
-        go("lose")
-}
+    target.move(0, MOVE_SPEED) 
 })
 }
 
