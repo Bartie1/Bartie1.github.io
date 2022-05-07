@@ -255,30 +255,45 @@ play("shoot")
 
 // die if player colldes with invaders
 
-function player_dies_if_collides_with_invaders(target_repeat_level, target) {
+function player_dies_if_collides_with_invaders(target_repeat_level, target, target_score) {
 
     target.onCollide("space_invader", () => {
-        go(target_repeat_level, {score: score.value})
+        go(target_repeat_level, {target_score: score.value})
     })
 
 }
 
 // space invader collides with player's bullets + scoreupdate
 
-function player_bullets_collide_with_invaders(target_next_level){
+function player_bullets_collide_with_invaders(target_next_level, target_score){
 
     collides("bullet_player", "space_invader", (b,s) => {
         destroy(b)
         destroy(s)
         addKaboom(b.pos)
-        score.value++
-        score.text = score.value
+        target_score.value++
+        target_score.text = score.value
         play("explosion")
         if (score.value == 24) {
             go(target_next_level)
         }    
     })
 }
+
+function spawnScore() {
+
+    const score = add([
+    text("0"),
+    pos(20, 180),
+    layer("ui"),
+    scale(1),
+    {
+        value: 0,
+    }
+    ])
+    return score
+}
+
 
 //----------------------------------------------------------------------------------
 
@@ -359,25 +374,21 @@ spawn_player_bullets_on_hitting_space(player)
 
 invadersMove(300)
 
+// score display
+
+const score = spawnScore()
+
 // invaders collide with player
 
-player_dies_if_collides_with_invaders(repeat_level, player)
+player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 // invader collides with player bullets
 
-player_bullets_collide_with_invaders(next_level)
+player_bullets_collide_with_invaders(next_level, score)
 
-// score display
 
-const score = add([
-text("0"),
-pos(20, 180),
-layer("ui"),
-scale(1),
-{
-    value: 0,
-}
-])
+
+
 
 // timer display
 
