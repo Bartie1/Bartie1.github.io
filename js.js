@@ -434,7 +434,6 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 // --------------- LEVEL 2 ADDING POWEFUL INVADERS -------------
 
-
 const powerful_invaders_settings = {
     "speed": 400,
     "bullet_speed": 800,
@@ -442,14 +441,14 @@ const powerful_invaders_settings = {
     "bullet_size": (20, 20)
 }
 
-let starting_postion_1 = (100, 100)
-let starting_position_2 = (300, 100)
+let powerful_invader_starting_postion_1 = (100, 100) // powerful invader 1, starting position
+let powerful_invader_starting_position_2 = (300, 100) // powerful invader 2, starting position
 
-let powerful_invader = invaderWrap(starting_postion_1);
-let powerful_invader2 = invaderWrap(starting_position_2);
+let powerful_invader = invaderWrap(powerful_invader_starting_postion_1) // wrap starting positions with the rest of args
+let powerful_invader2 = invaderWrap(powerful_invader_starting_position_2) // wrap starting positions with the rest of args
 
 const invaders = [powerful_invader, powerful_invader2]
-spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings)
+spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // spawn invaders function that adds AI/bullets/mechanics
 
 })
 
