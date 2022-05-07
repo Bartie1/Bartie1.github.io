@@ -265,7 +265,7 @@ function player_dies_if_collides_with_invaders(target_repeat_level, target, targ
 
 // space invader collides with player's bullets + scoreupdate
 
-function player_bullets_collide_with_invaders(target_next_level, target_score, target_score_required){
+function player_bullets_collide_with_invaders(target_next_level, target_score, target_score_required_for_next_level){
 
 
     collides("bullet_player", "space_invader", (b,s) => {
@@ -275,7 +275,7 @@ function player_bullets_collide_with_invaders(target_next_level, target_score, t
         target_score.value++
         target_score.text = target_score.value
         play("explosion")
-        if (target_score.value == target_score_required) {
+        if (target_score.value == target_score_required_for_next_level) {
             go(target_next_level)
         }    
     })
@@ -386,7 +386,7 @@ player_dies_if_collides_with_invaders(repeat_level, player, score)
 
 // invader collides with player bullets
 
-player_bullets_collide_with_invaders(next_level, score, core_required_for_next_lvl)
+player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl)
 
 
 // timer display
