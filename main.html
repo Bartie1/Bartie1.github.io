@@ -304,7 +304,6 @@ const gameLevel = addLevelWrapper(map1)
 // player & controls
 
 const player = spawnPlayer()
-
 let repeat_level = "lose"
 let next_level = "win_1"
 
@@ -414,14 +413,14 @@ const gameLevel = addLevelWrapper(map2)
 // player & controls
 
 const player = spawnPlayer()
+let repeat_level = "win_1"
+let next_level = "win_2"
 
 // Particle spawning
 
 spawnParticles(player)
 
 // player dies from space invader collision
-
-let repeat_level = "win_1"
 
 player.onCollide("invader", (invader) => {
     go(repeat_level, { score: score.value})
@@ -468,7 +467,7 @@ score.value++
 score.text = score.value
 play("explosion")
 if (score.value == 38) {
-    go("win_2")
+    go(next_level)
 }
 })
 
@@ -502,7 +501,7 @@ timer.action(() => {
 timer.time -= dt()
 timer.text = timer.time.toFixed(1)
 if (timer.time <= 0) {
-go("win_1")
+go(repeat_level)
 }
 
 })
@@ -652,6 +651,8 @@ const gameLevel = addLevelWrapper(map3)
 // player & controls
 
 const player = spawnPlayer()
+let repeat_level = "win_2"
+let next_level = "win_3"
 
 // Particle spawning
 
@@ -660,7 +661,7 @@ spawnParticles(player)
 // player dies from space invader collision
 
 player.onCollide("invader", (invader) => {
-    go("win_2", { score: score.value})
+    go(repeat_level, { score: score.value})
     })
 
 // player dies from bullet
@@ -669,7 +670,7 @@ player.onCollide("bullet", (bullet) => {
     destroy(bullet)
     destroy(player)
     addKaboom(bullet.pos)
-    go("win_2", { score: score.value})
+    go(repeat_level, { score: score.value})
 })
 
 // player key controlls
@@ -687,7 +688,7 @@ invadersMove(300)
 // invaders collide with player
 
 player.onCollide("space_invader", () => {
-go("win_2", {score: score.value})
+go(repeat_level, {score: score.value})
 })
 
 // invaders fall down the screen
@@ -703,7 +704,7 @@ score.value++
 score.text = score.value
 play("explosion")
 if (score.value == 39) {
-    go("win_3")
+    go(next_level)
 }
 })
 
@@ -737,7 +738,7 @@ timer.action(() => {
 timer.time -= dt()
 timer.text = timer.time.toFixed(1)
 if (timer.time <= 0) {
-go("win_2")
+go(repeat_level)
 }
 
 })
