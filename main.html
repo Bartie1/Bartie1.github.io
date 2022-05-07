@@ -237,7 +237,7 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
 
 //---------------------------------
 
-function spanwnPowerfulInvaders(target_invaders, target_player) {
+function spanwnPowerfulInvaders(target_invaders, target_player, target_score) {
     
 
     target_invaders.forEach(powerful_invader => {
@@ -246,21 +246,21 @@ function spanwnPowerfulInvaders(target_invaders, target_player) {
             powerful_invader.enterState("attack")
         })
 
-    powerful_invader.onStateEnter("attack", async () => {
-        if (powerful_invader.exists()){
-            const dir = target_player.pos.sub(powerful_invader.pos).unit()    
-            add ([
-                pos(powerful_invader.pos),
-                move(dir, BULLET_SPEED),
-                rect(30,10),
-                area(),
-                cleanup(),
-                origin("center"),
-                color(0, 255, 0),
-                play("pow"),
-                "bullet"
-                ])
-            }
+        powerful_invader.onStateEnter("attack", async () => {
+            if (powerful_invader.exists()){
+                const dir = target_player.pos.sub(powerful_invader.pos).unit()    
+                add ([
+                    pos(powerful_invader.pos),
+                    move(dir, BULLET_SPEED),
+                    rect(30,10),
+                    area(),
+                    cleanup(),
+                    origin("center"),
+                    color(0, 255, 0),
+                    play("pow"),
+                    "bullet"
+                    ])
+                }
 
         await wait(0.2)
         powerful_invader.enterState("move")
@@ -269,59 +269,55 @@ function spanwnPowerfulInvaders(target_invaders, target_player) {
         powerful_invader.onStateEnter("move", async () => {
             await wait(0.2)
             powerful_invader.enterState("idle")
-    })
+        })
 
         powerful_invader.onStateUpdate("move", () => {
             if (!target_player.exists()) return
             powerful_invader.move(ENEMY_SPEED, 0)
-
         })
 
         powerful_invader.onStateUpdate("attack", () => {
             if (!target_player.exists()) return
             powerful_invader.move(ENEMY_SPEED, 0)
-
-    })
+        })
 
         powerful_invader.onStateUpdate("idle", () => {
             if (!target_player.exists()) return
             powerful_invader.move(ENEMY_SPEED, 0)
+        })
 
-    })
-
-    powerful_invader.enterState("idle")
-
+        powerful_invader.enterState("idle")
     })
 
     // powerful invaders collide with player bullets
 
-    invaders.forEach(powerful_invader => {
+    target_invaders.forEach(powerful_invader => {
         powerful_invader.onCollide("bullet_player", (bullet_player) => {
-        destroy(powerful_invader)
-        destroy(bullet_player)
-        score.value++
-        score.text = score.value
-        
-    })
-    })
+            destroy(powerful_invader)
+            destroy(bullet_player)
+            target_score.value++
+            target_score.text = target_score.value    
+            })
+        })
 
 
     // powerful_invader collides with walls
 
 
-    invaders.forEach(powerful_invader =>{
+    target_invaders.forEach(powerful_invader =>{
         powerful_invader.onCollide("right_wall", (rightwall) => {
-        ENEMY_SPEED = -400
-        powerful_invader.move(0, LEVEL_DOWN)
+            ENEMY_SPEED = -400
+            powerful_invader.move(0, LEVEL_DOWN)
+            })
         })
         
-    invaders.forEach(powerful_invader =>{
-            powerful_invader.onCollide("left_wall", (leftwall) => {
+    target_invaders.forEach(powerful_invader =>{
+        powerful_invader.onCollide("left_wall", (leftwall) => {
             ENEMY_SPEED = 400
             powerful_invader.move(0, LEVEL_DOWN)
+            })
         })
-    })
-    })
+    
 }
 
 //-----------------------
@@ -474,7 +470,7 @@ const powerful_invader = add ([
 const invaders = [powerful_invader, powerful_invader2]
 
 
-spanwnPowerfulInvaders(invaders, player)
+spanwnPowerfulInvaders(invaders, player, score)
 
 })
 
