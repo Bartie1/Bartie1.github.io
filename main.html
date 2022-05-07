@@ -171,8 +171,7 @@ function addLevelWrapper(map_) {
 
 // defining small invaders behaviour
 
-const LEVEL_DOWN = 500
-
+let LEVEL_DOWN = 500
 
 function invadersMove(speed_right, speed_left){
     action("space_invader", (s) => {
@@ -330,15 +329,6 @@ invadersMove(300,-300)
 player.onCollide("space_invader", () => {
     go("lose", {score: score.value})
 })
-
-// invaders fall down the screen - define
-
-// invader.action((s) => {
-// if (s.pos.y >= height() ) {
-// go("win_35", {score: score.value })
-// }
-// })
-
 
 // invader collides with player bullets
 
