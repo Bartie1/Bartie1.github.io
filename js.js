@@ -693,7 +693,7 @@ const timer = spawnTimer(repeat_level, time_left) // spawn timer
 spawnParticles(player) // Particle spawning
 defineControls(player) // define controls
 spawn_player_bullets_on_hitting_space(player) // spawning bullets player
-invadersMove(700) // trigger invader's movement
+invadersMove(300) // trigger invader's movement
 player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
