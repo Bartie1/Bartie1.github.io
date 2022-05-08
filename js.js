@@ -10,7 +10,6 @@ kaboom({
 loadSprite("wall", "sprites/wall.png");
 loadSprite("space-ship", "sprites/space-ship.png");
 loadSprite("invader", "sprites/invader.png")
-loadSprite("star", "sprites/flame.png")
 loadSprite("ghost", "sprites/ghost.png")
 loadSound("main", "sounds/main_theme.mp3")
 loadSound("main2", "sounds/main_theme2.mp3")
@@ -19,9 +18,21 @@ loadSound("explosion", "sounds/explosion.mp3")
 loadSound("pow", "sounds/poow.mp3")
 layer(["obj","ui"], "obj")
 
+// stars!
+
+loadSprite("red", "sprites/red.png")
+loadSprite("blue", "sprites/blue.png")
+loadSprite("purple", "sprites/purple.png")
+loadSprite("green", "sprites/green.png")
+loadSprite("pink", "sprites/pink.png")
+
 // set global volume
-    
-volume(0.4)
+
+volume = 0.4
+
+const music = play(choose(["main", "main2"]), {
+    loop: true,
+    })
 
 // reset cursor to default at frame start for easier cursor management
 
@@ -115,28 +126,54 @@ function invadersMove(speed){
     })
 }
 
+// spawn falling stars
+
+function spawnBackgroundParticles(target_stars_loop) {
+    const sprites = ["pink"]
+
+    loop(target_stars_loop, () => {
+        const stars = add([
+            pos(Math.floor(window.innerWidth/2),-50),
+            sprite(choose(sprites)),
+            origin("center"),
+            scale(rand(0.5, 1)),
+            area(),
+            body({ solid: false, }),
+            lifespan(10, { fade: 0.5 }),
+            move(choose([LEFT, RIGHT]), rand(0, Math.floor(window.innerWidth/6))),
+            rotate(),
+            gravity(50),
+            "stars"
+        ])
+        
+        stars.onUpdate(() => {
+            stars.angle += 90 * dt()
+        })
+    })
+}
+
 // spawn flames particles
 
 function spawnParticles(target) {
-    const sprites = ["star"]
+    const sprites = ["blue", "purple", "green", "red"]
 
-    sprites.forEach((spr) => {
-        loadSprite(spr, "sprites/flame.png")
-    })
-
-    // Spawn one particle every 0.1 second
-    loop(0.1, () => {
-
-        // Compose particle properties with components
-        const item = add([
+    loop(0.08, () => {
+        const stars = add([
             pos(target/* target means player arg */.pos.add(27, 83)),
             sprite(choose(sprites)),
             origin("center"),
             scale(rand(0.5, 1)),
             area(),
             body({ solid: false, }),
-            lifespan(1, { fade: 0.5 }),
+            lifespan(2, { fade: 1 }),
+            move(choose([LEFT, RIGHT, DOWN]), rand(10, 20)),
+            rotate()
         ])
+        
+        stars.onUpdate(() => {
+            stars.angle += 90 * dt()
+        })
+
 
     })
 }
@@ -174,6 +211,15 @@ function spawn_player_bullets_on_hitting_space(target) {
 function player_dies_if_collides_with_invaders(target_repeat_level, target, target_score) {
 
     target.onCollide("space_invader", () => {
+        go(target_repeat_level, {target_score: target_score.value})
+    })
+}
+
+// die if player colldes with stars
+
+function player_dies_if_collides_with_stars(target_repeat_level, target, target_score) {
+
+    target.onCollide("stars", () => {
         go(target_repeat_level, {target_score: target_score.value})
     })
 }
@@ -341,11 +387,26 @@ function spawnTimer(target_repeat_level, target_time_left) {
     return timer
 }
 
+function randomHint(){
+    const hints = choose([
+    "Avoid the falling stars!",
+    "You can not only move left and right, up and down is fine too",
+    "Press space to shoot",
+    "Invaders and their bullets move faster with each level",
+    "Did you know that you only need to complete level 3 to move to the next puzzle?",
+    "Stars fall down faster with each level",
+    "If you lose a round you repeat the same level",
+    "I am really fond of egg cheese sandwitches for breakfast",
+    "Complete Level 5 to unlock a special prize!",
+    "If level 5 is too hard you can always give up"
+    ])
+    debug.log(hints)
+}
+
+
 // -------------------------------------------------- Game Level 1 ------------------------------------------------------------------------       
 
 scene("game_1", () => {
-
-    const music = play("main2")
 
 const map1 = [
     "!    ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^   ^                  &", 
@@ -364,10 +425,14 @@ let repeat_level = "win_0" // repeat current level
 let next_level = "win_1" // next level
 let score_required_for_next_lvl = 24 // score required to move to next round
 let time_left = 30 // show time to complete the round
+let stars_loop = 0.3 // stars loop every X sec (lower = stars drop faster)
+
 
 const player = spawnPlayer() // spawn player
 const score = spawnScore() // score display
 const timer = spawnTimer(repeat_level, time_left) // spawn timer 
+
+
 
 spawnParticles(player) // Particle spawning
 defineControls(player) // define controls
@@ -376,6 +441,10 @@ invadersMove(300) // trigger invader's movement
 player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
+
+spawnBackgroundParticles(stars_loop) // enable stars falling
+player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
+randomHint() // generates random hints
 })
      
 // -------------------------------------------------- Game Level 2  ------------------------------------------------------------------------       
@@ -399,6 +468,7 @@ let repeat_level = "win_1" // repeat current level
 let next_level = "win_2" // next level
 let score_required_for_next_lvl = 38 // score required to move to next round
 let time_left = 40 // show time to complete the round
+let stars_loop = 0.3 // stars loop every X sec (lower = stars drop faster)
 
 const player = spawnPlayer() // spawn player
 const score = spawnScore() // score display
@@ -411,6 +481,10 @@ invadersMove(300) // trigger invader's movement
 player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
+
+spawnBackgroundParticles(stars_loop) // enable stars falling
+player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
+randomHint() // generates random hints
 
 
 // --------------- LEVEL 2 ADDING POWEFUL INVADERS -------------
@@ -454,6 +528,7 @@ let repeat_level = "win_2" // repeat current level
 let next_level = "win_3" // next level
 let score_required_for_next_lvl = 39 // score required to move to next round
 let time_left = 50 // show time to complete the round
+let stars_loop = 0.3 // stars loop every X sec (lower = stars drop faster)
 
 const player = spawnPlayer() // spawn player
 const score = spawnScore() // score display
@@ -466,6 +541,10 @@ invadersMove(300) // trigger invader's movement
 player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
+
+spawnBackgroundParticles(stars_loop) // enable stars falling
+player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
+randomHint() // generates random hints
 
 // --------------- LEVEL 3 ADDING POWEFUL INVADERS -------------
 
@@ -510,6 +589,7 @@ let repeat_level = "win_35" // repeat current level
 let next_level = "win_4" // next level
 let score_required_for_next_lvl = 52 // score required to move to next round
 let time_left = 50 // show time to complete the round
+let stars_loop = 0.2 // stars loop every X sec (lower = stars drop faster)
 
 const player = spawnPlayer() // spawn player
 const score = spawnScore() // score display
@@ -522,6 +602,9 @@ invadersMove(300) // trigger invader's movement
 player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
+
+spawnBackgroundParticles(stars_loop) // enable stars falling
+player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 
 // --------------- LEVEL 4 ADDING POWEFUL INVADERS -------------
 
@@ -545,6 +628,7 @@ let powerful_invader4 = invaderWrap(powerful_invader_starting_position_4, powerf
 
 const invaders = [powerful_invader, powerful_invader2, powerful_invader3, powerful_invader4]
 spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // spawn invaders function that adds AI/bullets/mechanics
+randomHint() // generates random hints
 })
 
 // -------------------------------------------------- Game Level 5  ------------------------------------------------------------------------       
@@ -568,6 +652,7 @@ let repeat_level = "win_4" // repeat current level
 let next_level = "win_5" // next level
 let score_required_for_next_lvl = 52 // score required to move to next round
 let time_left = 50 // show time to complete the round
+let stars_loop = 0.05 // stars loop every X sec (lower = stars drop faster)
 
 const player = spawnPlayer() // spawn player
 const score = spawnScore() // score display
@@ -580,6 +665,10 @@ invadersMove(700) // trigger invader's movement
 player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
+
+spawnBackgroundParticles(stars_loop) // enable stars falling
+player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
+randomHint() // generates random hints
 
 // --------------- LEVEL 5 ADDING POWEFUL INVADERS -------------
 
@@ -640,7 +729,7 @@ scene("win_2", () => {
 scene("win_3", () => {
     add([
         pos(500, 250),
-        text("You win!\n\n Password to move to the next puzzle is is: PASSWORD1\n\n Or mouse click to  carry on playing\n\n There are 2 levels left!", {
+        text("You win!\n\n Password to move to the next puzzle is is: PASSWORD1\n\n Good luck during the rest of the escape room!", {
             size: 48, 
             width: 1400, 
             font: "sink", 
@@ -668,7 +757,7 @@ scene("win_35", () => {
 scene("win_4", () => {
     add([
         pos(500, 250),
-        text("LEVEL 5. FINAL LEVEL \n\nInvaders count: 46.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nALL INVADERS ARE UPGRADED.\n\nMouse click to continue!", {
+        text("LEVEL 5. FINAL LEVEL \n\nInvaders count: 46.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nARE YOU READY FOR TOTAL BULLET HELL MAYHEM?\n\nMouse click to continue!", {
             size: 48, 
             width: 1400, 
             font: "sink", 
@@ -697,6 +786,9 @@ scene("win_5", () => {
 
 scene("main_menu", () => {
 
+    let stars_loop = 0.3 // stars loop every X sec (lower = stars drop faster)
+    spawnBackgroundParticles(stars_loop) // enable stars falling
+
 //spooky ghost and text
 
     const ghost = add([
@@ -704,6 +796,7 @@ scene("main_menu", () => {
         scale (0.7),
         pos(1200,600),
     ])
+
 
 
     add([
@@ -735,7 +828,7 @@ scene("main_menu", () => {
     // menu buttons
 
     addButton("Start", vec2(300, 300), () => start() )
-    addButton("Quit", vec2(300, 500), () => debug.log("Actually this program can't close the browser by itself yet."))
+    addButton("Quit", vec2(300, 500), () => debug.log("If you can't beat the game and are ready to give up the password is: Password1"))
 
 })
 
