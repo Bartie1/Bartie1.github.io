@@ -400,7 +400,7 @@ function spawnTimer(target_repeat_level, target_time_left) {
 
 // esc to main menu
 
-function escToMenu() {
+function console() {
     onKeyPress("escape", () => go("main_menu"))
     onKeyPress("1", () => go("game_1"))
     onKeyPress("2", () => go("game_2"))
@@ -473,7 +473,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
-escToMenu()
+console()
 })
      
 // -------------------------------------------------- Game Level 2  ------------------------------------------------------------------------       
@@ -514,7 +514,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
-escToMenu()
+console()
 
 
 // --------------- LEVEL 2 ADDING POWEFUL INVADERS -------------
@@ -575,7 +575,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
-escToMenu()
+console()
 
 // --------------- LEVEL 3 ADDING POWEFUL INVADERS -------------
 
@@ -636,7 +636,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
-escToMenu()
+console()
 
 // --------------- LEVEL 4 ADDING POWEFUL INVADERS -------------
 
@@ -701,7 +701,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
-escToMenu()
+console()
 
 // --------------- LEVEL 5 ADDING POWEFUL INVADERS -------------
 
@@ -811,7 +811,7 @@ scene("win_5", () => {
         }),
     ])
 
-    escToMenu()
+    console()
     const player = spawnPlayer() // spawn player
     defineControls(player) // define controls
     let stars_loop = 0.05 // stars loop every X sec (lower = stars drop faster)
@@ -828,7 +828,7 @@ scene("main_menu", () => {
 
     let stars_loop = 0.1 // stars loop every X sec (lower = stars drop faster)
     spawnBackgroundParticles(stars_loop) // enable stars falling
-    escToMenu()
+    console()
 
 //spooky ghost and text
 
