@@ -693,7 +693,7 @@ const timer = spawnTimer(repeat_level, time_left) // spawn timer
 spawnParticles(player) // Particle spawning
 defineControls(player) // define controls
 spawn_player_bullets_on_hitting_space(player) // spawning bullets player
-invadersMove(700) // trigger invader's movement
+invadersMove(300) // trigger invader's movement
 player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
@@ -835,13 +835,13 @@ scene("main_menu", () => {
     const ghost = add([
         sprite("ghost"),
         scale (0.7),
-        pos(1200,600),
+        pos(window.innerWidth*0.5, window.innerHeight*0.5),,
     ])
 
 
 
     add([
-        pos(700, 300),
+        pospos(window.innerWidth*0.5, window.innerHeight*0.2),,
         text("LIBRARY GHOST DEMANS YOU PLAY THE GAME TO MOVE FORWARD!\n\n\n 'Use arrow keys to move around, space to shoot!'", {
         size: 38,
         width: 800, 
@@ -868,8 +868,8 @@ scene("main_menu", () => {
 
     // menu buttons
 
-    addButton("Start", vec2(300, 300), () => start() )
-    addButton("Quit", vec2(300, 500), () => debug.log("If you can't beat the game and are ready to give up the password is: Password1"))
+    addButton("Start", vec2(window.innerWidth*0.1, window.innerHeight*0.1), () => start() )
+    addButton("Quit", vec2(window.innerWidth*0.1, window.innerHeight*0.3), () => debug.log("If you can't beat the game and are ready to give up the password is: Password1"))
 
 })
 
