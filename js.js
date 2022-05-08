@@ -841,7 +841,7 @@ scene("main_menu", () => {
 
 
     add([
-        pospos(window.innerWidth*0.5, window.innerHeight*0.2),,
+        pos(window.innerWidth*0.5, window.innerHeight*0.2),,
         text("LIBRARY GHOST DEMANS YOU PLAY THE GAME TO MOVE FORWARD!\n\n\n 'Use arrow keys to move around, space to shoot!'", {
         size: 38,
         width: 800, 
