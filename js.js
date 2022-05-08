@@ -143,6 +143,7 @@ function spawnBackgroundParticles(target_stars_loop) {
             move(choose([LEFT, RIGHT]), rand(0, Math.floor(window.innerWidth/6))),
             rotate(),
             gravity(50),
+            cleanup(3),
             "stars"
         ])
         
@@ -189,6 +190,7 @@ function spawn_player_bullets_on_hitting_space(target) {
         pos(p),
         origin("center"),
         color(0, 255, 255),
+        cleanup(),
         "bullet_player"
         ])
     }
