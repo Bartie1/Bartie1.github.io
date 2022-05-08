@@ -155,7 +155,7 @@ function spawnBackgroundParticles(target_stars_loop) {
 // spawn flames particles
 
 function spawnParticles(target) {
-    const sprites = ["blue", "purple", "green", "red"]
+    const sprites = ["blue", "purple", "green", "red", "pink"]
 
     loop(0.08, () => {
         const stars = add([
@@ -211,7 +211,11 @@ function spawn_player_bullets_on_hitting_space(target) {
 function player_dies_if_collides_with_invaders(target_repeat_level, target, target_score) {
 
     target.onCollide("space_invader", () => {
-        go(target_repeat_level, {target_score: target_score.value})
+        shake(200)
+        addKaboom(target.pos)
+        destroy(target)
+        wait(2, () =>
+            go(target_repeat_level, {target_score: target_score.value}))
     })
 }
 
@@ -220,7 +224,11 @@ function player_dies_if_collides_with_invaders(target_repeat_level, target, targ
 function player_dies_if_collides_with_stars(target_repeat_level, target, target_score) {
 
     target.onCollide("stars", () => {
-        go(target_repeat_level, {target_score: target_score.value})
+        shake(200)
+        addKaboom(target.pos)
+        destroy(target)
+        wait(2, () =>
+            go(target_repeat_level, {target_score: target_score.value}))
     })
 }
 
@@ -249,7 +257,9 @@ function player_dies_from_bullets(target_repeat_level, target, target_score) {
         destroy(bullet)
         destroy(target)
         addKaboom(bullet.pos)
-        go(target_repeat_level, { target_score: target_score.value})
+        shake(200)
+        wait(2, () =>
+            go(target_repeat_level, {target_score: target_score.value}))
     })
 }
 
@@ -387,17 +397,35 @@ function spawnTimer(target_repeat_level, target_time_left) {
     return timer
 }
 
+
+// esc to main menu
+
+function escToMenu() {
+    onKeyPress("escape", () => go("main_menu"))
+    onKeyPress("1", () => go("game_1"))
+    onKeyPress("2", () => go("game_2"))
+    onKeyPress("3", () => go("game_3"))
+    onKeyPress("4", () => go("game_4"))
+    onKeyPress("5", () => go("game_5"))
+    onKeyPress("6", () => go("win_5"))
+    onKeyPress("k", () => music.play())
+    onKeyPress("m", () => music.pause())
+}
+
+// displays random hints
+
 function randomHint(){
     const hints = choose([
     "Avoid the falling stars!",
-    "You can not only move left and right, up and down is fine too",
+    "You can move left and right and up and down",
     "Press space to shoot",
     "Invaders and their bullets move faster with each level",
     "Did you know that you only need to complete level 3 to move to the next puzzle?",
     "Stars fall down faster with each level",
     "If you lose a round you repeat the same level",
     "I am really fond of egg cheese sandwitches for breakfast",
-    "Complete Level 5 to unlock a special prize!",
+    "Press ESC to go back to the menu",
+    "Press M to mute the music, K to unmute",
     "If level 5 is too hard you can always give up"
     ])
     debug.log(hints)
@@ -445,6 +473,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
+escToMenu()
 })
      
 // -------------------------------------------------- Game Level 2  ------------------------------------------------------------------------       
@@ -485,6 +514,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
+escToMenu()
 
 
 // --------------- LEVEL 2 ADDING POWEFUL INVADERS -------------
@@ -545,6 +575,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
+escToMenu()
 
 // --------------- LEVEL 3 ADDING POWEFUL INVADERS -------------
 
@@ -605,6 +636,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
+escToMenu()
 
 // --------------- LEVEL 4 ADDING POWEFUL INVADERS -------------
 
@@ -669,6 +701,7 @@ player_bullets_collide_with_invaders(next_level, score, score_required_for_next_
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
+escToMenu()
 
 // --------------- LEVEL 5 ADDING POWEFUL INVADERS -------------
 
@@ -700,7 +733,7 @@ spanwnPowerfulInvaders(invaders, player, score, powerful_invaders_settings) // s
 
 scene("win_1", () => {
     add([
-        pos(500, 250),
+        pos(window.innerWidth*0.1, window.innerHeight*0.1),
         text("LEVEL 2.\n \nInvaders count: 36.\n\nPOWERFUL INVADERS count: 2\n\nTime: 40 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
             size: 48, 
             width: 1400, 
@@ -714,7 +747,7 @@ scene("win_1", () => {
 
 scene("win_2", () => {
     add([
-        pos(500, 250),
+        pos(window.innerWidth*0.1, window.innerHeight*0.1),
         text("LEVEL 3.\n \nInvaders count: 36.\n\n POWERFUL INVADERS count: 3\n\nTime: 50 seconds.\n\nEliminate invaders.\n\nMouse click to continue!", {
             size: 48, 
             width: 1400, 
@@ -728,7 +761,7 @@ scene("win_2", () => {
 
 scene("win_3", () => {
     add([
-        pos(500, 250),
+        pos(window.innerWidth*0.1, window.innerHeight*0.1),
         text("You win!\n\n Password to move to the next puzzle is is: PASSWORD1\n\n Good luck during the rest of the escape room!", {
             size: 48, 
             width: 1400, 
@@ -742,7 +775,7 @@ scene("win_3", () => {
 
 scene("win_35", () => {
     add([
-        pos(500, 250),
+        pos(window.innerWidth*0.1, window.innerHeight*0.1),
         text("LEVEL 4.\n\nInvaders count: 48.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nPOWERFUL INVADERS ARE UPGRADED.\n\nMouse click to continue!", {
             size: 48, 
             width: 1400, 
@@ -756,7 +789,7 @@ scene("win_35", () => {
 
 scene("win_4", () => {
     add([
-        pos(500, 250),
+        pos(window.innerWidth*0.1, window.innerHeight*0.1),
         text("LEVEL 5. FINAL LEVEL \n\nInvaders count: 46.\n\n POWERFUL INVADERS count: 4\n\nTime: 50 seconds.\n\nARE YOU READY FOR TOTAL BULLET HELL MAYHEM?\n\nMouse click to continue!", {
             size: 48, 
             width: 1400, 
@@ -770,14 +803,21 @@ scene("win_4", () => {
 
 scene("win_5", () => {
     add([
-        pos(500, 250),
-        text("Congratulations on beating my game!", {
-            size: 48, 
+        pos(window.innerWidth*0.1, window.innerHeight*0.1),
+        text("Congratulations on beating my game!\n\n I made the game using JavaScript and kaboom.js library. \n\n Sprites and graphics used in this game are eithier freebies, library inbuilt, or made in paint.\n\n All the sounds & music has been written and recorded in Musescore by me. \n\n Press ESC to go to back", {
+            size: 36, 
             width: 1400, 
             font: "sink", 
         }),
-    onClick(() => go("main_menu"))
     ])
+
+    escToMenu()
+    const player = spawnPlayer() // spawn player
+    defineControls(player) // define controls
+    let stars_loop = 0.05 // stars loop every X sec (lower = stars drop faster)
+    spawnBackgroundParticles(stars_loop) // enable stars falling
+    spawnParticles(player) // Particle spawning 
+
 })
 
 // start program with main menu scene
@@ -788,6 +828,7 @@ scene("main_menu", () => {
 
     let stars_loop = 0.1 // stars loop every X sec (lower = stars drop faster)
     spawnBackgroundParticles(stars_loop) // enable stars falling
+    escToMenu()
 
 //spooky ghost and text
 
@@ -842,7 +883,7 @@ function start() {
 
 scene("win_0", () => {
     add([
-    pos(500, 250),
+    pos(window.innerWidth*0.1, window.innerHeight*0.1),
     text("LEVEL 1.\n \nInvaders count: 24.\n\nTime: 30 seconds.\n\nEliminate invaders.\n\nPress any key to continue!", {
         size: 48,
         width: 1400, 
