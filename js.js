@@ -50,7 +50,7 @@ function spawnPlayer() {
     const player = add([
         sprite("space-ship"),
         scale (0.5),
-        pos(910,800),
+        pos(Math.floor(window.innerWidth/2), window.innerHeight*0.8),
         area(),
         solid(),
         ])
@@ -786,7 +786,7 @@ scene("win_5", () => {
 
 scene("main_menu", () => {
 
-    let stars_loop = 0.3 // stars loop every X sec (lower = stars drop faster)
+    let stars_loop = 0.1 // stars loop every X sec (lower = stars drop faster)
     spawnBackgroundParticles(stars_loop) // enable stars falling
 
 //spooky ghost and text
