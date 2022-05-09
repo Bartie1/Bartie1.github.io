@@ -457,12 +457,9 @@ let score_required_for_next_lvl = 24 // score required to move to next round
 let time_left = 30 // show time to complete the round
 let stars_loop = 0.3 // stars loop every X sec (lower = stars drop faster)
 
-
 const player = spawnPlayer() // spawn player
 const score = spawnScore() // score display
 const timer = spawnTimer(repeat_level, time_left) // spawn timer 
-
-
 
 spawnParticles(player) // Particle spawning
 defineControls(player) // define controls
@@ -471,11 +468,10 @@ invadersMove(300) // trigger invader's movement
 player_dies_from_bullets(repeat_level, player, score) // player dies from bullet
 player_dies_if_collides_with_invaders(repeat_level, player, score) // invaders collide with player (player dies)
 player_bullets_collide_with_invaders(next_level, score, score_required_for_next_lvl) // invaders collides with player bullets and die + accumulates score
-
 spawnBackgroundParticles(stars_loop) // enable stars falling
 player_dies_if_collides_with_stars(repeat_level, player, score) // stars collide with player (player dies)
 randomHint() // generates random hints
-escToMenu()
+escToMenu() // enable console
 })
      
 // -------------------------------------------------- Game Level 2  ------------------------------------------------------------------------       
